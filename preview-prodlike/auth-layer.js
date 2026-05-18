@@ -10,6 +10,29 @@
   const API = "https://wilbanks-server-production.up.railway.app";
   const TOKEN_KEY = "wc_auth_token"; // sessionStorage — clears when tab closes... we use memory
   const USERNAME_KEY = "wc_saved_username";
+
+  // ── Early synchronous hash restoration ─────────────────────────────────────
+  // Runs BEFORE the React bundle parses/executes so wouter sees the correct
+  // hash on first render. Without this, a PWA cold launch (start_url has no
+  // hash) or any environment that drops the hash on reload would briefly
+  // render the Dashboard before the async bootstrap restore kicks in.
+  // Uses localStorage so the route survives PWA cold relaunch and tab close.
+  try {
+    const _curHashEarly = window.location.hash || '';
+    const _savedEarly = localStorage.getItem('wc_last_hash') || sessionStorage.getItem('wc_last_hash') || '';
+    const _isFieldEarly = window.location.pathname.includes('fieldtech') ||
+                          window.location.href.includes('wilbanks-fieldtech');
+    // Only restore for the dashboard app. Field-tech routes are short-lived (login → jobs).
+    if (!_isFieldEarly && _savedEarly && _savedEarly !== '#/' && _savedEarly !== '#' &&
+        (!_curHashEarly || _curHashEarly === '#/' || _curHashEarly === '#')) {
+      // Use replaceState so we don't add a Dashboard entry to history.
+      try {
+        history.replaceState(null, '', _savedEarly);
+      } catch {
+        window.location.hash = _savedEarly.replace(/^#/, '');
+      }
+    }
+  } catch {}
   const WEBAUTHN_PROMPT_KEY = "wc_webauthn_prompted"; // so we only ask once
   const WEBAUTHN_VALID_KEY = "wc_webauthn_valid"; // set after a successful Face ID login
 
@@ -693,13 +716,14 @@
     dismissOverlay();
     window.__WC_USER = currentUser;
     window.__WC_LOGOUT = logout;
-    // Restore the hash route from before the refresh
+    // Restore the hash route from before the refresh (post-login path).
+    // Handled synchronously at the top of auth-layer.js for hard refreshes;
+    // this branch covers the login → launchApp flow.
     try {
-      const savedHash = sessionStorage.getItem('wc_last_hash');
-      if (savedHash && savedHash !== '#/' && savedHash !== '#') {
-        sessionStorage.removeItem('wc_last_hash');
-        // Try immediately, then retry after React has mounted — wouter picks up
-        // window.location.hash changes via its own popstate/hashchange listeners
+      const savedHash = localStorage.getItem('wc_last_hash') || sessionStorage.getItem('wc_last_hash');
+      const curHash = window.location.hash;
+      const onRoot = !curHash || curHash === '#/' || curHash === '#';
+      if (onRoot && savedHash && savedHash !== '#/' && savedHash !== '#') {
         const _applyHash = () => {
           try { window.location.hash = savedHash.replace(/^#/, ''); } catch {}
         };
@@ -1667,11 +1691,14 @@
           window.__WC_LOGOUT = logout;
           // Token valid — show app and inject UI elements
           if (root) root.style.display = "";
-          // Restore the hash route from before the refresh
+          // Restore the hash route from before the refresh (token-valid path).
+          // Handled synchronously at the top for hard refreshes; this only runs
+          // when the hash wasn't restored early (e.g. sessionStorage path).
           try {
-            const savedHash = sessionStorage.getItem('wc_last_hash');
-            if (savedHash && savedHash !== '#/' && savedHash !== '#') {
-              sessionStorage.removeItem('wc_last_hash');
+            const savedHash = localStorage.getItem('wc_last_hash') || sessionStorage.getItem('wc_last_hash');
+            const curHash = window.location.hash;
+            const onRoot = !curHash || curHash === '#/' || curHash === '#';
+            if (onRoot && savedHash && savedHash !== '#/' && savedHash !== '#') {
               const _applyHash = () => {
                 try { window.location.hash = savedHash.replace(/^#/, ''); } catch {}
               };
@@ -1737,17 +1764,25 @@
   // Save the current hash route continuously so a refresh (or iOS PWA relaunch)
   // lands back on the same screen. iOS Safari does NOT reliably fire beforeunload,
   // so we save on hashchange and visibilitychange instead.
+  // Uses localStorage so it survives PWA cold relaunch, tab close, and any path
+  // that drops the URL hash on reload. Field-tech app routes are excluded —
+  // they are short-lived (login → jobs) and shouldn't be restored on dashboard.
   const HASH_KEY = 'wc_last_hash';
   function _saveHash() {
     try {
-      const h = window.location.hash;
-      if (h && h !== '#/' && h !== '#') {
-        sessionStorage.setItem(HASH_KEY, h);
-      } else {
-        sessionStorage.removeItem(HASH_KEY);
-      }
+      const isField = window.location.pathname.includes('fieldtech') ||
+                      window.location.href.includes('wilbanks-fieldtech');
+      if (isField) return;
+      const h = window.location.hash || '#/';
+      // Always reflect the current route, including '#/' (dashboard). This way
+      // a refresh lands exactly on the page the user was viewing — dashboard
+      // included.
+      localStorage.setItem(HASH_KEY, h);
     } catch {}
   }
+  // Save immediately on load so the early-restore block has something on a
+  // future refresh even if the user never navigates.
+  _saveHash();
   window.addEventListener('hashchange', _saveHash);
   document.addEventListener('visibilitychange', _saveHash);
   window.addEventListener('pagehide', _saveHash);
