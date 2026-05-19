@@ -10,36 +10,6 @@
   const API = "https://wilbanks-server-production.up.railway.app";
   const TOKEN_KEY = "wc_auth_token"; // sessionStorage — clears when tab closes... we use memory
   const USERNAME_KEY = "wc_saved_username";
-
-  // ── Early synchronous hash restoration ─────────────────────────────────────
-  // Runs BEFORE the React bundle parses/executes so wouter sees the correct
-  // hash on first render. Without this, a PWA cold launch (start_url has no
-  // hash) or any environment that drops the hash on reload would briefly
-  // render the Dashboard before the async bootstrap restore kicks in.
-  // Uses localStorage so the route survives PWA cold relaunch and tab close.
-  try {
-    const _curHashEarly = window.location.hash || '';
-    const _savedEarly = localStorage.getItem('wc_last_hash') || sessionStorage.getItem('wc_last_hash') || '';
-    const _savedAtEarly = parseInt(localStorage.getItem('wc_last_hash_at') || sessionStorage.getItem('wc_last_hash_at') || '0', 10) || 0;
-    const _isFieldEarly = window.location.pathname.includes('fieldtech') ||
-                          window.location.href.includes('wilbanks-fieldtech');
-    // Session-break threshold: if the last navigation was > 10 minutes ago,
-    // treat this as a fresh session and land on the Dashboard. Anything within
-    // 10 minutes is a reload/quick tab-flip and we restore the user's route.
-    const HASH_RESTORE_TTL_MS = 10 * 60 * 1000;
-    const _withinTtl = _savedAtEarly > 0 && (Date.now() - _savedAtEarly) <= HASH_RESTORE_TTL_MS;
-    // Only restore for the dashboard app. Field-tech routes are short-lived (login → jobs).
-    if (!_isFieldEarly && _savedEarly && _savedEarly !== '#/' && _savedEarly !== '#' &&
-        (!_curHashEarly || _curHashEarly === '#/' || _curHashEarly === '#') &&
-        _withinTtl) {
-      // Use replaceState so we don't add a Dashboard entry to history.
-      try {
-        history.replaceState(null, '', _savedEarly);
-      } catch {
-        window.location.hash = _savedEarly.replace(/^#/, '');
-      }
-    }
-  } catch {}
   const WEBAUTHN_PROMPT_KEY = "wc_webauthn_prompted"; // so we only ask once
   const WEBAUTHN_VALID_KEY = "wc_webauthn_valid"; // set after a successful Face ID login
 
@@ -62,14 +32,6 @@
       // Use localStorage for both apps so JWT survives iOS Safari suspending the tab.
       // The server enforces the 30-day expiry, so this is safe.
       localStorage.setItem(TOKEN_KEY, token);
-    } catch {}
-    // Notify the React app that auth is now ready. The React app may have
-    // already mounted (and fired its first useQuery calls) with no token —
-    // those queries returned 401 and are now stuck in error state. App.tsx
-    // listens for this event and invalidates all queries so they refetch
-    // with the now-present Authorization header.
-    try {
-      window.dispatchEvent(new CustomEvent('wc:auth-ready'));
     } catch {}
   }
   function loadToken() {
@@ -731,18 +693,13 @@
     dismissOverlay();
     window.__WC_USER = currentUser;
     window.__WC_LOGOUT = logout;
-    // Restore the hash route from before the refresh (post-login path).
-    // Handled synchronously at the top of auth-layer.js for hard refreshes;
-    // this branch covers the login → launchApp flow. Respects the 10-minute
-    // TTL so a fresh login (logout → login, or session expired) lands on the
-    // Dashboard, not back on whatever page the user was on previously.
+    // Restore the hash route from before the refresh
     try {
-      const savedHash = localStorage.getItem('wc_last_hash') || sessionStorage.getItem('wc_last_hash');
-      const savedAt = parseInt(localStorage.getItem('wc_last_hash_at') || sessionStorage.getItem('wc_last_hash_at') || '0', 10) || 0;
-      const withinTtl = savedAt > 0 && (Date.now() - savedAt) <= (10 * 60 * 1000);
-      const curHash = window.location.hash;
-      const onRoot = !curHash || curHash === '#/' || curHash === '#';
-      if (onRoot && savedHash && savedHash !== '#/' && savedHash !== '#' && withinTtl) {
+      const savedHash = sessionStorage.getItem('wc_last_hash');
+      if (savedHash && savedHash !== '#/' && savedHash !== '#') {
+        sessionStorage.removeItem('wc_last_hash');
+        // Try immediately, then retry after React has mounted — wouter picks up
+        // window.location.hash changes via its own popstate/hashchange listeners
         const _applyHash = () => {
           try { window.location.hash = savedHash.replace(/^#/, ''); } catch {}
         };
@@ -1540,15 +1497,8 @@
 
     // Strategy 1b: Dashboard mobile menu — inject Admin Tools + Sign Out
     function tryInjectMobileMenu() {
-      // Find the mobile nav dropdown. Prefer the explicit data-testid added
-      // by Sidebar.tsx; fall back to the legacy class-only selector for
-      // older bundles. The legacy '.fixed.top-[57px]' selector is now
-      // dangerous because the AI FullPageResults overlay (AskAiBar.tsx)
-      // ALSO uses 'top-[57px]' on mobile to expose this dropdown's header.
-      // If we matched the overlay by accident, we'd inject Admin Tools +
-      // Sign Out INTO the AI results panel.
-      const mobileMenu = document.querySelector('[data-testid="mobile-nav-dropdown"]')
-        || document.querySelector('.md\\:hidden.fixed.top-\\[57px\\]');
+      // The mobile dropdown has class 'md:hidden fixed top-[57px]'
+      const mobileMenu = document.querySelector('.fixed.top-\\[57px\\]');
       if (!mobileMenu) return;
 
       // Inject collapsible Admin Tools section for admin/both roles
@@ -1674,10 +1624,7 @@
     // Poll for mobile menu visibility and inject QB link + admin items when open
     var _lastMenuChildCount = 0;
     setInterval(function() {
-      // Same selector hardening as tryInjectMobileMenu — must not match the
-      // AskAiBar FullPageResults overlay (which also uses top-[57px] on mobile).
-      var menu = document.querySelector('[data-testid="mobile-nav-dropdown"]')
-        || document.querySelector('.md\\:hidden.fixed.top-\\[57px\\]');
+      var menu = document.querySelector('.fixed.top-\\[57px\\]');
       if (!menu) return;
       var visible = menu.offsetHeight > 0 && getComputedStyle(menu).display !== 'none';
       if (!visible) return;
@@ -1720,18 +1667,11 @@
           window.__WC_LOGOUT = logout;
           // Token valid — show app and inject UI elements
           if (root) root.style.display = "";
-          // Restore the hash route from before the refresh (token-valid path).
-          // Handled synchronously at the top for hard refreshes; this only runs
-          // when the hash wasn't restored early (e.g. sessionStorage path).
-          // Respects the 10-minute TTL so reopening the app after a session
-          // break lands on the Dashboard, not the last page.
+          // Restore the hash route from before the refresh
           try {
-            const savedHash = localStorage.getItem('wc_last_hash') || sessionStorage.getItem('wc_last_hash');
-            const savedAt = parseInt(localStorage.getItem('wc_last_hash_at') || sessionStorage.getItem('wc_last_hash_at') || '0', 10) || 0;
-            const withinTtl = savedAt > 0 && (Date.now() - savedAt) <= (10 * 60 * 1000);
-            const curHash = window.location.hash;
-            const onRoot = !curHash || curHash === '#/' || curHash === '#';
-            if (onRoot && savedHash && savedHash !== '#/' && savedHash !== '#' && withinTtl) {
+            const savedHash = sessionStorage.getItem('wc_last_hash');
+            if (savedHash && savedHash !== '#/' && savedHash !== '#') {
+              sessionStorage.removeItem('wc_last_hash');
               const _applyHash = () => {
                 try { window.location.hash = savedHash.replace(/^#/, ''); } catch {}
               };
@@ -1797,52 +1737,21 @@
   // Save the current hash route continuously so a refresh (or iOS PWA relaunch)
   // lands back on the same screen. iOS Safari does NOT reliably fire beforeunload,
   // so we save on hashchange and visibilitychange instead.
-  // Uses localStorage so it survives PWA cold relaunch, tab close, and any path
-  // that drops the URL hash on reload. Field-tech app routes are excluded —
-  // they are short-lived (login → jobs) and shouldn't be restored on dashboard.
   const HASH_KEY = 'wc_last_hash';
-  const HASH_AT_KEY = 'wc_last_hash_at';
   function _saveHash() {
     try {
-      const isField = window.location.pathname.includes('fieldtech') ||
-                      window.location.href.includes('wilbanks-fieldtech');
-      if (isField) return;
-      const h = window.location.hash || '#/';
-      // Always reflect the current route, including '#/' (dashboard). This way
-      // a refresh lands exactly on the page the user was viewing — dashboard
-      // included. The timestamp is used by the early-restore block to decide
-      // whether the route is fresh enough to restore (≤10min = restore, else
-      // land on Dashboard for a fresh session).
-      localStorage.setItem(HASH_KEY, h);
-      localStorage.setItem(HASH_AT_KEY, String(Date.now()));
+      const h = window.location.hash;
+      if (h && h !== '#/' && h !== '#') {
+        sessionStorage.setItem(HASH_KEY, h);
+      } else {
+        sessionStorage.removeItem(HASH_KEY);
+      }
     } catch {}
   }
-  // Glenn's UX rule (preview-prodlike): closing or backgrounding the app on iPhone
-  // should always result in a fresh Dashboard on reopen, NOT a restore to the
-  // last page. So when the tab becomes hidden / page is being unloaded, we
-  // CLEAR the saved route instead of saving it. Hashchanges within an active
-  // session still save normally, which preserves intra-session refresh behavior.
-  function _clearHash() {
-    try {
-      const isField = window.location.pathname.includes('fieldtech') ||
-                      window.location.href.includes('wilbanks-fieldtech');
-      if (isField) return;
-      localStorage.removeItem(HASH_KEY);
-      localStorage.removeItem(HASH_AT_KEY);
-      sessionStorage.removeItem(HASH_KEY);
-      sessionStorage.removeItem(HASH_AT_KEY);
-    } catch {}
-  }
-  function _onVisibilityHidden() {
-    if (document.visibilityState === 'hidden') _clearHash();
-  }
-  // Save immediately on load so the early-restore block has something on a
-  // future refresh even if the user never navigates.
-  _saveHash();
   window.addEventListener('hashchange', _saveHash);
-  document.addEventListener('visibilitychange', _onVisibilityHidden);
-  window.addEventListener('pagehide', _clearHash);
-  window.addEventListener('beforeunload', _clearHash);
+  document.addEventListener('visibilitychange', _saveHash);
+  window.addEventListener('pagehide', _saveHash);
+  window.addEventListener('beforeunload', _saveHash);
 
   // ── QB Login Nav Link (removed per user request) ─────────────────────────
 
@@ -1864,8 +1773,7 @@
     const svgIcon = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>';
 
     // Mobile menu link — always inject regardless of sidebar presence
-    const mobileMenu = document.querySelector('[data-testid="mobile-nav-dropdown"]')
-      || document.querySelector('.md\\:hidden.fixed.top-\\[57px\\]');
+    const mobileMenu = document.querySelector('.fixed.top-\\[57px\\]');
     if (mobileMenu) {
       let mobileLink = document.getElementById('wc-qb-login-mobile');
       if (!mobileLink) {
