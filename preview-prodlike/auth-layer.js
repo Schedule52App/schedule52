@@ -56,6 +56,14 @@
       // The server enforces the 30-day expiry, so this is safe.
       localStorage.setItem(TOKEN_KEY, token);
     } catch {}
+    // Notify the React app that auth is now ready. The React app may have
+    // already mounted (and fired its first useQuery calls) with no token —
+    // those queries returned 401 and are now stuck in error state. App.tsx
+    // listens for this event and invalidates all queries so they refetch
+    // with the now-present Authorization header.
+    try {
+      window.dispatchEvent(new CustomEvent('wc:auth-ready'));
+    } catch {}
   }
   function loadToken() {
     if (_token) return _token;
