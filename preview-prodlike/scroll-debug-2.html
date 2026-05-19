@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Wilbanks scroll debug v2 — focus handler attached</title>
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #0b1220; color: #fff; }
+  * { box-sizing: border-box; }
+
+  .app { position: fixed; inset: 0; display: flex; flex-direction: column; height: 100dvh; }
+
+  header.topbar {
+    position: fixed; top: 0; left: 0; right: 0; height: 57px;
+    background: #1f2937; border-bottom: 1px solid #334155;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 14px; z-index: 100;
+  }
+  header.topbar .title { font-weight: 600; font-size: 14px; }
+  header.topbar .right { display: flex; gap: 6px; }
+  header.topbar button {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: transparent; border: 1px solid #475569; color: #cbd5e1;
+  }
+
+  main {
+    flex: 1; overflow: auto;
+    padding-top: 80px; padding-bottom: 64px;
+    -webkit-overflow-scrolling: touch;
+    scroll-padding-top: 120px; scroll-padding-bottom: 120px;
+  }
+
+  .form { margin: 12px 14px; padding: 14px; border-radius: 8px; background: rgba(148,163,184,0.08); border: 1px solid #334155; }
+  .form h2 { margin: 0 0 12px; font-size: 13px; font-weight: 700; }
+  .field { margin-bottom: 12px; }
+  .field label { display: block; font-size: 11px; color: #94a3b8; margin-bottom: 4px; }
+  .field input, .field select, .field textarea {
+    width: 100%; padding: 10px 12px; border-radius: 6px;
+    border: 1px solid #475569; background: #0f172a; color: #fff;
+    font-size: 15px;
+  }
+  .field textarea { min-height: 80px; resize: none; }
+  .btnrow { display: flex; gap: 8px; justify-content: space-between; margin-top: 8px; }
+  .btn { padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 700; border: 1px solid #475569; background: transparent; color: #cbd5e1; }
+  .btn.primary { background: #3b82f6; border-color: #3b82f6; color: #fff; }
+  .btn.danger { color: #f87171; border-color: #f87171; }
+
+  .askbar {
+    position: relative; z-index: 95; flex-shrink: 0;
+    border-top: 1px solid #334155; background: rgba(15,23,42,0.95);
+    backdrop-filter: blur(8px);
+    padding: 10px 14px; padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 16px);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .askbar .bulb { width: 36px; height: 36px; border-radius: 8px; border: 1px solid #475569; display:flex; align-items:center; justify-content:center; }
+  .askbar input { flex: 1; padding: 10px 12px; border-radius: 8px; border: 1px solid #475569; background: #0b1220; color: #fff; font-size: 15px; }
+  .askbar .go { padding: 10px 14px; border-radius: 8px; background: #475569; color: #fff; border: 0; font-size: 13px; }
+
+  #readout {
+    position: fixed; top: 64px; right: 6px; z-index: 9999;
+    background: rgba(0,0,0,0.88); color: #00ff9c;
+    font: 10px/1.30 ui-monospace, Menlo, Monaco, monospace;
+    padding: 8px 10px; border-radius: 6px;
+    border: 1px solid #22c55e;
+    width: 220px; white-space: pre; pointer-events: none;
+  }
+  #log {
+    position: fixed; top: 64px; left: 6px; z-index: 9999;
+    background: rgba(0,0,0,0.88); color: #fbbf24;
+    font: 10px/1.30 ui-monospace, Menlo, Monaco, monospace;
+    padding: 8px 10px; border-radius: 6px;
+    border: 1px solid #f59e0b;
+    width: 170px; max-height: 280px; overflow: hidden;
+    white-space: pre; pointer-events: none;
+  }
+  #snapBtn {
+    position: fixed; bottom: 110px; right: 12px; z-index: 9999;
+    padding: 10px 14px; border-radius: 8px;
+    background: #f59e0b; color: #000; font-weight: 700; border: 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  }
+  #handlerToggle {
+    position: fixed; bottom: 110px; left: 12px; z-index: 9999;
+    padding: 10px 14px; border-radius: 8px;
+    background: #3b82f6; color: #fff; font-weight: 700; border: 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="title">Scroll Debug v2 · focus handler ON</div>
+    <div class="right">
+      <button>☼</button>
+      <button>≡</button>
+    </div>
+  </header>
+
+  <main id="scroller">
+    <div class="form" id="form">
+      <h2 id="formtop">Edit Equipment (debug clone v2)</h2>
+      <div class="field"><label>Make *</label><input id="f-make" value="LG" /></div>
+      <div class="field"><label>Model Number</label><input id="f-model" value="LSC27925ST" /></div>
+      <div class="field"><label>Serial Number</label><input id="f-serial" value="311MRJFON740" /></div>
+      <div class="field"><label>Category</label><select id="f-cat"><option>HVAC</option><option>Plumbing</option></select></div>
+      <div class="field"><label>Installed Date</label><input id="f-date" type="date" value="2026-05-19" /></div>
+      <div class="field"><label>Equipment Type</label><input id="f-type" value="Mini Split" /></div>
+      <div class="field"><label>Location</label><input id="f-loc" value="Main Level" /></div>
+      <div class="field"><label>Tech Notes</label><textarea id="f-notes" placeholder="Optional notes"></textarea></div>
+      <div class="btnrow" id="btnrow">
+        <button class="btn danger" id="b-del">Delete</button>
+        <div style="display:flex;gap:8px;">
+          <button class="btn" id="b-cancel">Cancel</button>
+          <button class="btn primary" id="b-save">Save</button>
+        </div>
+      </div>
+    </div>
+    <div style="height: 100px;"></div>
+  </main>
+
+  <div class="askbar" id="askbar">
+    <div class="bulb">💡</div>
+    <input placeholder="Ask anything..." id="askinput" />
+    <button class="go">Ask</button>
+  </div>
+</div>
+
+<div id="readout">measuring…</div>
+<div id="log">log…</div>
+<button id="snapBtn">SNAPSHOT</button>
+<button id="handlerToggle">Handler: ON</button>
+
+<script>
+  // =====================================================================
+  // EXACT COPY of useViewportHeight focus-scroll handler from src/App.tsx
+  // (same code that's in the live preview-prodlike React app right now)
+  // =====================================================================
+  const scroller = document.getElementById('scroller');
+  const btnrow = document.getElementById('btnrow');
+  const formtop = document.getElementById('formtop');
+  const askbar = document.getElementById('askbar');
+  const header = document.querySelector('.topbar');
+  const readout = document.getElementById('readout');
+  const logEl = document.getElementById('log');
+  const events = [];
+  function pushEvent(label, extra) {
+    const e = { t: Date.now() % 100000, label, ...extra };
+    events.push(e);
+    if (events.length > 30) events.shift();
+    renderLog();
+  }
+  function renderLog() {
+    logEl.textContent = events.slice(-14).map(e =>
+      `${String(e.t).padStart(5,' ')} ${e.label}` +
+      (e.scrollTo!=null?` →${e.scrollTo}`:'') +
+      (e.from!=null?` (from ${e.from})`:'') +
+      (e.skip?' SKIP':'')
+    ).join('\n');
+  }
+
+  // ----- begin verbatim port from App.tsx::useViewportHeight -----
+  let handlerEnabled = true;
+
+  const vv = window.visualViewport;
+  const measure = () => {
+    const vvH = vv ? vv.height : 0;
+    const winH = window.innerHeight || 0;
+    const keyboardOpen = vv && winH - vvH > 100;
+    if (keyboardOpen && vvH > 0) {
+      document.documentElement.style.setProperty('--app-height', Math.round(vvH) + 'px');
+    } else {
+      document.documentElement.style.removeProperty('--app-height');
+    }
+  };
+  measure();
+  window.addEventListener('resize', measure);
+  window.addEventListener('orientationchange', () => setTimeout(measure, 100));
+  if (vv) {
+    vv.addEventListener('resize', measure);
+    vv.addEventListener('scroll', measure);
+  }
+
+  const isEditable = (el) => {
+    if (!el) return false;
+    const tag = el.tagName;
+    return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || el.isContentEditable;
+  };
+
+  const scrollIntoMainView = (t) => {
+    if (!handlerEnabled) { pushEvent('scrollIntoMainView SKIP (off)'); return; }
+    try {
+      let s = t.parentElement;
+      while (s && s !== document.body) {
+        const st = getComputedStyle(s);
+        if (/(auto|scroll)/.test(st.overflowY) && s.scrollHeight > s.clientHeight) break;
+        s = s.parentElement;
+      }
+      const main = s || document.querySelector('main');
+      if (main) {
+        const mainRect = main.getBoundingClientRect();
+        const tRect = t.getBoundingClientRect();
+        const TOP_OFFSET = 120;
+        const from = main.scrollTop;
+        const target = main.scrollTop + (tRect.top - mainRect.top) - TOP_OFFSET;
+        const clamped = Math.max(0, target);
+        pushEvent('scrollIntoMainView', { from, scrollTo: clamped });
+        main.scrollTo({ top: clamped, behavior: 'smooth' });
+      } else {
+        t.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      }
+      window.scrollTo(0, 0);
+    } catch (err) { pushEvent('scrollIntoMainView ERR'); }
+  };
+
+  let lastFocusEl = null;
+  const onFocusIn = (e) => {
+    const t = e.target;
+    if (!isEditable(t)) return;
+    if (t === lastFocusEl) return;
+    lastFocusEl = t;
+    pushEvent('focusin ' + t.id);
+    setTimeout(() => { if (document.activeElement === t) scrollIntoMainView(t); measure(); }, 50);
+    setTimeout(() => { if (document.activeElement === t) scrollIntoMainView(t); measure(); }, 400);
+  };
+  const onFocusOut = () => {
+    lastFocusEl = null;
+    pushEvent('focusout');
+    setTimeout(() => { window.scrollTo(0, 0); measure(); }, 100);
+    setTimeout(() => { window.scrollTo(0, 0); measure(); }, 350);
+  };
+  const onWinScroll = () => {
+    if (window.scrollY !== 0 || window.scrollX !== 0) {
+      pushEvent('win force0', { from: window.scrollY });
+      window.scrollTo(0, 0);
+    }
+  };
+  window.addEventListener('scroll', onWinScroll, { passive: true });
+  document.addEventListener('focusin', onFocusIn);
+  document.addEventListener('focusout', onFocusOut);
+  // ----- end verbatim port -----
+
+  function snap() {
+    const sRect = scroller.getBoundingClientRect();
+    const btnRect = btnrow.getBoundingClientRect();
+    const topRect = formtop.getBoundingClientRect();
+    const askRect = askbar.getBoundingClientRect();
+    const hdrRect = header.getBoundingClientRect();
+    return {
+      sTop: scroller.scrollTop|0,
+      sMax: (scroller.scrollHeight - scroller.clientHeight)|0,
+      cH: scroller.clientHeight|0,
+      sH: scroller.scrollHeight|0,
+      mTop: sRect.top|0, mBot: sRect.bottom|0,
+      fTop: topRect.top|0,
+      btTop: btnRect.top|0, btBot: btnRect.bottom|0,
+      askTop: askRect.top|0, askBot: askRect.bottom|0,
+      hdrBot: hdrRect.bottom|0,
+      winY: window.scrollY|0,
+      vvH: vv ? Math.round(vv.height) : -1,
+      winH: window.innerHeight|0,
+      kbd: (vv && (window.innerHeight - vv.height) > 100) ? 'YES' : 'no',
+    };
+  }
+  function render() {
+    const s = snap();
+    readout.textContent =
+      'sTop='+s.sTop+' /'+s.sMax+'\n'+
+      'cH='+s.cH+' sH='+s.sH+'\n'+
+      'main='+s.mTop+'..'+s.mBot+'\n'+
+      'form.top='+s.fTop+'\n'+
+      'btn='+s.btTop+'..'+s.btBot+'\n'+
+      'ask='+s.askTop+'..'+s.askBot+'\n'+
+      'hdr.bot='+s.hdrBot+'\n'+
+      'winY='+s.winY+' winH='+s.winH+'\n'+
+      'vvH='+s.vvH+'  kbd='+s.kbd+'\n'+
+      'handler='+(handlerEnabled?'ON':'OFF');
+  }
+  scroller.addEventListener('scroll', render, { passive: true });
+  setInterval(render, 250);
+  render();
+
+  document.getElementById('snapBtn').addEventListener('click', () => {
+    pushEvent('SNAP', snap());
+  });
+  document.getElementById('handlerToggle').addEventListener('click', () => {
+    handlerEnabled = !handlerEnabled;
+    document.getElementById('handlerToggle').textContent = 'Handler: ' + (handlerEnabled?'ON':'OFF');
+    pushEvent('handler ' + (handlerEnabled?'ON':'OFF'));
+    render();
+  });
+</script>
+</body>
+</html>
