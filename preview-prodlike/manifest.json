@@ -1,6 +1,6 @@
 {
-  "name": "Wilbanks Company",
-  "short_name": "Wilbanks",
+  "name": "Wilbanks Preview",
+  "short_name": "Wilbanks Preview",
   "description": "HVAC & Plumbing Scheduling Dashboard",
   "start_url": "https://gwilbanksplumbing.github.io/wilbanks-scheduler-staging/preview-prodlike/",
   "scope": "https://gwilbanksplumbing.github.io/wilbanks-scheduler-staging/preview-prodlike/",
