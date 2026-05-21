@@ -690,18 +690,37 @@
   }
 
   function launchApp() {
-    // Post-login reload: React Query already fired its initial fetches against
-    // /api/appointments (and other endpoints) BEFORE the token existed, caching
-    // 401 failures. The cache lives in JS memory, so a full reload is the cleanest
-    // way to make sure the first fetches after auth carry the Bearer token from
-    // the start. The token is already persisted to localStorage by saveToken(),
-    // and wc_last_hash is preserved in sessionStorage so bootstrap() restores
-    // the route after the reload. Do NOT remove this reload without also adding
-    // a queryClient.invalidateQueries() bridge from auth-layer.js into the React
-    // app — otherwise the calendar will render empty until the 15s refetchInterval
-    // ticks (see patched.tsx, useQuery for /api/appointments). Documented in the
-    // blueprint, deploy v-fix-post-login-empty-calendar-2026-05-20.
-    window.location.reload();
+    // Root-cause fix (replaces v65 post-login reload workaround).
+    //
+    // BEFORE (v65 .. v75): we did window.location.reload() here because React
+    // Query had fired initial fetches against /api/appointments (and friends)
+    // BEFORE the token existed, those fetches got 401'd and were cached as
+    // errors in JS memory (retry:1, staleTime:30s, refetchOnWindowFocus:false).
+    // A full reload was the blunt-instrument fix.
+    //
+    // NOW: React's <AuthReadyInvalidator /> in App.tsx listens for
+    // 'wc:auth-ready' and calls queryClient.invalidateQueries(), which clears
+    // any cached 401 errors and refetches every query with the now-present
+    // Bearer token. No reload needed. We also set a global flag so the React
+    // component can detect auth-ready if it mounted AFTER this dispatch.
+    //
+    // Make sure the root is visible (bootstrap may have hidden it).
+    try {
+      const root = document.getElementById('root');
+      if (root) root.style.display = '';
+    } catch {}
+    // Set sticky flag for components that mount after this event fires.
+    try { window.__WC_AUTH_READY = true; } catch {}
+    try {
+      window.dispatchEvent(new CustomEvent('wc:auth-ready', {
+        detail: { user: window.__WC_USER || null, at: Date.now() }
+      }));
+    } catch (e) {
+      // If dispatch fails for any reason, fall back to the old reload behavior
+      // so the user never gets stuck on an empty calendar.
+      console.warn('[auth-layer] wc:auth-ready dispatch failed, falling back to reload', e);
+      window.location.reload();
+    }
   }
 
   // ── Inactivity timeout ─────────────────────────────────────────────────────
@@ -1671,6 +1690,16 @@
           } catch {}
           // Sync display name into field tech app header
           syncFieldTechName(user);
+          // Tell React Query that auth is ready so any queries that mounted
+          // and got 401'd before the token was validated can refetch.
+          // (Existing-session path: token was in localStorage at page load,
+          // so most queries should already have succeeded. This is defensive.)
+          try { window.__WC_AUTH_READY = true; } catch {}
+          try {
+            window.dispatchEvent(new CustomEvent('wc:auth-ready', {
+              detail: { user, at: Date.now(), source: 'bootstrap' }
+            }));
+          } catch {}
           // Inject Admin Tools nav for admin role only
           // Run at multiple intervals to survive React re-renders from hash restoration
           setTimeout(function() { injectAdminToolsNav(); injectRecordPaymentButtons(); injectRecordPaymentDetailPage(); }, 300);
