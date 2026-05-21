@@ -1,4 +1,4 @@
-const CACHE = "wc-v62";
+const CACHE = "wc-v63";
 const OFFLINE = ["/", "/index.html"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE)));

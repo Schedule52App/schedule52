@@ -1497,8 +1497,14 @@
 
     // Strategy 1b: Dashboard mobile menu — inject Admin Tools + Sign Out
     function tryInjectMobileMenu() {
-      // The mobile dropdown has class 'md:hidden fixed top-[57px]'
-      const mobileMenu = document.querySelector('.fixed.top-\\[57px\\]');
+      // The mobile dropdown is tagged data-testid="mobile-nav-dropdown" in
+      // Sidebar.tsx. We MUST target it by that attribute, not by
+      // '.fixed.top-[57px]', because the AskAiBar's FullPageResults overlay
+      // also uses 'fixed top-[57px]' to sit below the mobile header — and
+      // the class-selector match was causing Admin Tools + Sign Out to get
+      // injected into the bottom of every AI answer view on both iPhone
+      // and desktop. (Bug surfaced 2026-05-20 on the duplicates AI answer.)
+      const mobileMenu = document.querySelector('[data-testid="mobile-nav-dropdown"]');
       if (!mobileMenu) return;
 
       // Inject collapsible Admin Tools section for admin/both roles
@@ -1624,7 +1630,7 @@
     // Poll for mobile menu visibility and inject QB link + admin items when open
     var _lastMenuChildCount = 0;
     setInterval(function() {
-      var menu = document.querySelector('.fixed.top-\\[57px\\]');
+      var menu = document.querySelector('[data-testid="mobile-nav-dropdown"]');
       if (!menu) return;
       var visible = menu.offsetHeight > 0 && getComputedStyle(menu).display !== 'none';
       if (!visible) return;
