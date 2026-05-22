@@ -1,5 +1,5 @@
 // STAGING build — combined offline cache + push notification SW
-const CACHE = "wc-v95";
+const CACHE = "wc-v96";
 // Use scope-relative paths so this works at /wilbanks-scheduler-staging/preview-prodlike/
 // NOT at site root. addAll() rejects install if any URL 404s.
 // self.location.href is /wilbanks-scheduler-staging/preview-prodlike/sw.js
@@ -27,9 +27,19 @@ self.addEventListener("activate", e => {
 
 self.addEventListener("fetch", e => {
   if (e.request.url.includes("/api/") || e.request.url.includes("/uploads/")) return;
+  // Only cache GETs with successful, basic (same-origin) responses.
+  if (e.request.method !== "GET") return;
   e.respondWith(
-    fetch(e.request).then(res => { caches.open(CACHE).then(c => c.put(e.request, res.clone())); return res; })
-      .catch(() => caches.match(e.request))
+    fetch(e.request).then(res => {
+      // Clone BEFORE returning — the original body can only be consumed once.
+      try {
+        if (res && res.ok && (res.type === "basic" || res.type === "cors")) {
+          const copy = res.clone();
+          caches.open(CACHE).then(c => c.put(e.request, copy)).catch(() => {});
+        }
+      } catch (_) { /* swallow */ }
+      return res;
+    }).catch(() => caches.match(e.request))
   );
 });
 
