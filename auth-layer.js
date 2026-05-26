@@ -1639,9 +1639,14 @@
 
   function logout() {
     clearToken();
-    // Full page reload on logout — guarantees the next user starts with a
-    // completely clean slate (no stale React state, query cache, or injected DOM)
-    window.location.reload();
+    // Navigate to a fresh URL instead of reload() — bypasses iOS Safari bfcache
+    // which can restore the page from memory without re-running bootstrap.
+    try {
+      const base = window.location.pathname;
+      window.location.replace(base + '?lo=' + Date.now());
+    } catch {
+      window.location.reload();
+    }
   }
 
   // Expose logout globally
