@@ -366,6 +366,9 @@
     // Unhide root
     const root = document.getElementById("root");
     if (root) root.style.display = "";
+    // Signal React app that auth is complete so it re-fires all queries
+    window.__WC_AUTH_READY = true;
+    try { window.dispatchEvent(new CustomEvent("wc:auth-ready")); } catch {}
   }
 
   // ── Login screen ──────────────────────────────────────────────────────────
