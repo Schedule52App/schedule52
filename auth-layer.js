@@ -714,12 +714,7 @@
     // Sync display name into the field tech app's localStorage key
     // so the top-left header always shows the logged-in user's name
     syncFieldTechName(currentUser);
-    injectLogoutButton();
-    // Admin Tools nav is handled by the React app natively
-    // Inject Admin Tools nav directly - React renders before __WC_USER is set so we do it via DOM
-    setTimeout(function() { injectAdminToolsNav(); }, 300);
-    setTimeout(function() { injectAdminToolsNav(); }, 800);
-    setTimeout(function() { injectAdminToolsNav(); }, 1600);
+    // React app renders Sign Out and Admin Tools natively — no injection needed
     // Start inactivity timer
     startInactivityTimer();
   }
@@ -790,6 +785,8 @@
 
   // ── User Management ────────────────────────────────────────────────────────
   function injectAdminToolsNav() {
+    // React app renders Admin Tools natively
+    return;
     const role = currentUser?.role;
     if (role !== 'admin') return;
     const isAdmin = true;
@@ -1451,7 +1448,9 @@
   }
 
   function injectLogoutButton() {
+    // React app handles this natively
     document.getElementById('wc-logout-btn')?.remove();
+    return;
 
     // Build a sidebar-style logout button (dashboard desktop)
     function buildSidebarBtn() {
