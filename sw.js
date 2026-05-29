@@ -1,4 +1,4 @@
-// cache-bust: 20260529-170700
+// cache-bust: 20260529-212535 (logo fix: restore logo assets + canonical logo-DmC-dsba.jpg)
 // STAGING build — separate cache namespace
 // Wilbanks Company — Push Notification Service Worker
 const BADGE_KEY = "wilbanks_badge_count";
