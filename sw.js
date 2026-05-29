@@ -1,4 +1,4 @@
-// cache-bust: 20260529-213800 (re-enable Sign Out + Admin Tools injection in auth-layer)
+// cache-bust: 20260529-220000 (inject Sign Out + Admin Tools on fresh login via launchApp)
 // STAGING build — separate cache namespace
 // Wilbanks Company — Push Notification Service Worker
 const BADGE_KEY = "wilbanks_badge_count";

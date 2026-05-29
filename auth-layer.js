@@ -714,7 +714,14 @@
     // Sync display name into the field tech app's localStorage key
     // so the top-left header always shows the logged-in user's name
     syncFieldTechName(currentUser);
-    // React app renders Sign Out and Admin Tools natively — no injection needed
+    // Inject the sidebar Sign Out button + Admin Tools nav after a FRESH login.
+    // The React app does NOT render these natively, so they must be injected
+    // here just like bootstrap() does for a token-already-present page load.
+    // Multiple intervals survive React re-renders during initial mount.
+    setTimeout(function() { injectAdminToolsNav(); injectRecordPaymentButtons(); injectRecordPaymentDetailPage(); }, 300);
+    setTimeout(function() { injectAdminToolsNav(); injectRecordPaymentButtons(); injectRecordPaymentDetailPage(); }, 800);
+    setTimeout(function() { injectAdminToolsNav(); injectRecordPaymentButtons(); injectRecordPaymentDetailPage(); }, 1600);
+    setTimeout(function() { injectLogoutButton(); }, 1500);
     // Start inactivity timer
     startInactivityTimer();
   }
