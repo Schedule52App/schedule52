@@ -1502,8 +1502,13 @@
 
     // Strategy 1b: Dashboard mobile menu — inject Admin Tools + Sign Out
     function tryInjectMobileMenu() {
-      // The mobile dropdown has class 'md:hidden fixed top-[57px]'
-      const mobileMenu = document.querySelector('.fixed.top-\\[57px\\]');
+      // The mobile dropdown has class 'md:hidden fixed top-[57px]'.
+      // IMPORTANT: require `.md:hidden` so we never match the AI full-page
+      // results overlay, which also uses `fixed top-[57px]` (but is NOT
+      // md:hidden — it's z-[90] md:top-0 md:left-64). Matching the overlay
+      // injected Admin Tools + Sign Out into the AI results panel, leaking
+      // them above the AI bar on mobile.
+      const mobileMenu = document.querySelector('.md\\:hidden.fixed.top-\\[57px\\]');
       if (!mobileMenu) return;
 
       // Inject collapsible Admin Tools section for admin/both roles
@@ -1629,7 +1634,7 @@
     // Poll for mobile menu visibility and inject QB link + admin items when open
     var _lastMenuChildCount = 0;
     setInterval(function() {
-      var menu = document.querySelector('.fixed.top-\\[57px\\]');
+      var menu = document.querySelector('.md\\:hidden.fixed.top-\\[57px\\]');
       if (!menu) return;
       var visible = menu.offsetHeight > 0 && getComputedStyle(menu).display !== 'none';
       if (!visible) return;
@@ -1794,8 +1799,10 @@
       : _qbSessionValid === true ? ' <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#22c55e;margin-left:auto"></span>' : '';
     const svgIcon = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>';
 
-    // Mobile menu link — always inject regardless of sidebar presence
-    const mobileMenu = document.querySelector('.fixed.top-\\[57px\\]');
+    // Mobile menu link — always inject regardless of sidebar presence.
+    // Require `.md:hidden` so the AI full-page results overlay (also
+    // `fixed top-[57px]`, but z-[90]/md:top-0) is never matched.
+    const mobileMenu = document.querySelector('.md\\:hidden.fixed.top-\\[57px\\]');
     if (mobileMenu) {
       let mobileLink = document.getElementById('wc-qb-login-mobile');
       if (!mobileLink) {
