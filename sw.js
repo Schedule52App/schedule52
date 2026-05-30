@@ -1,4 +1,4 @@
-// cache-bust: 20260531-040000 (fix: remove viewport-fit=cover + relative manifest/icon paths to match prod)
+// cache-bust: 20260530-101500 (feature: Customer No. display across customers/appointments/invoices/estimates)
 // STAGING build — separate cache namespace
 // Wilbanks Company — Push Notification Service Worker
 const BADGE_KEY = "wilbanks_badge_count";
