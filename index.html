@@ -2,13 +2,24 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#09090b" />
+    <!-- Match production EXACTLY. Two staging-only mistakes were fixed here:
+         (1) `viewport-fit=cover` was REMOVED. In an installed standalone PWA it
+             changes how iOS applies the bottom safe-area inset, which pushed the
+             in-flow "Ask anything" bar UP, leaving a gap below it. Prod uses
+             `maximum-scale=1` and no viewport-fit, so we match it.
+         (2) The manifest + apple-touch-icon used ABSOLUTE paths (`/manifest.json`,
+             `/icons/icon-192.png`) that resolve to the domain root, not this
+             subdirectory, so they 404'd — iOS then showed a black "W" fallback
+             icon. Switched to RELATIVE `./` paths pointing at the files that
+             actually exist at the staging root. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <link rel="icon" type="image/png" href="./icon-192.png" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./manifest.json" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="Wilbanks Scheduler" />
-    <link rel="manifest" href="/manifest.json" />
-    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    <meta name="apple-mobile-web-app-title" content="WB Staging" />
+    <meta name="theme-color" content="#09090b" />
     <title>Wilbanks Scheduler</title>
     <!--
       ─────────────────────────────────────────────────────────────────────
@@ -29,7 +40,7 @@
     <script>
       (function () {
         // Version this page was actually loaded with (from the auth-layer tag below).
-        var LOADED_VERSION = "20260531-030000";
+        var LOADED_VERSION = "20260531-040000";
         var RELOAD_GUARD = "wc_autoreload_" + LOADED_VERSION;
         try {
           // If we already reloaded for this version this session, don't loop.
@@ -53,7 +64,7 @@
           .catch(function () { /* network hiccup — ignore, page still works */ });
       })();
     </script>
-    <script src="/wilbanks-scheduler-staging/auth-layer.js?v=20260531-030000"></script>
+    <script src="/wilbanks-scheduler-staging/auth-layer.js?v=20260531-040000"></script>
     <script type="module" crossorigin src="/wilbanks-scheduler-staging/assets/index-BPsdGEvx.js"></script>
     <link rel="stylesheet" crossorigin href="/wilbanks-scheduler-staging/assets/index-CrUk812_.css">
   </head>

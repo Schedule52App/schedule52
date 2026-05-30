@@ -1,4 +1,4 @@
-// cache-bust: 20260531-030000 (fix: match production layout exactly - 100vh + in-flow AI bar)
+// cache-bust: 20260531-040000 (fix: remove viewport-fit=cover + relative manifest/icon paths to match prod)
 // STAGING build — separate cache namespace
 // Wilbanks Company — Push Notification Service Worker
 const BADGE_KEY = "wilbanks_badge_count";
