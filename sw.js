@@ -1,4 +1,4 @@
-// cache-bust: 20260530-172500 (fix: validate recipient email in live Send-Invoice-via-Gmail dialog)
+// cache-bust: 20260530-180800 (feat: capture additional customer emails on New Appointment form)
 // STAGING build — separate cache namespace
 // Wilbanks Company — Push Notification Service Worker
 const BADGE_KEY = "wilbanks_badge_count";
