@@ -1,4 +1,4 @@
-// cache-bust: 20260530-170000 (feature: multi-recipient HVAC invoice picker + customer email-addresses editor)
+// cache-bust: 20260530-171500 (feature: multi-recipient HVAC invoice picker + email validation in customer editors)
 // STAGING build — separate cache namespace
 // Wilbanks Company — Push Notification Service Worker
 const BADGE_KEY = "wilbanks_badge_count";
