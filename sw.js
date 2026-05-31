@@ -1,4 +1,4 @@
-// cache-bust: 20260530-180800 (feat: capture additional customer emails on New Appointment form)
+// cache-bust: 20260530-192600 (feat: auto-populate all customer emails as removable pills in invoice send dialog)
 // STAGING build — separate cache namespace
 // Wilbanks Company — Push Notification Service Worker
 const BADGE_KEY = "wilbanks_badge_count";
