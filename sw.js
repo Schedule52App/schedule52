@@ -1,4 +1,4 @@
-// cache-bust: 20260530-223500 (Plumbing/QB invoice: open QB tab via qbInvoiceUrl, invoice left unsent for manual send; bundle index-KoshaAwU, css index-D6LehClm)
+// cache-bust: 20260531-112800 (New Appointment customer dropdown: prefix/any-word starts-with match only, no mid-word substring; bundle index-BuscQnpP.js, css index-D6LehClm)
 // STAGING build — separate cache namespace
 // Wilbanks Company — Push Notification Service Worker
 const BADGE_KEY = "wilbanks_badge_count";
