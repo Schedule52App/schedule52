@@ -1,4 +1,4 @@
-// cache-bust: 20260531-1700 (calendar chip color legend between grid and AI bar; bundle index-Dym-fFUK.js, css index-Bv1lvZEk)
+// cache-bust: 20260601-1310 (estimate Preview & Send falls back to customer email when recipients empty; bundle index-BwIShC61.js, css index-Bv1lvZEk)
 // STAGING build — separate cache namespace
 // Wilbanks Company — Push Notification Service Worker
 const BADGE_KEY = "wilbanks_badge_count";
