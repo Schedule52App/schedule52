@@ -1,4 +1,4 @@
-// cache-bust: 20260601-1645 (add-phone UX: autofocus label, Contact + 10-digit-example placeholders, mobile digit visibility; bundle index-GHfOzrI0.js, css index-D0a8jZap.css)
+// cache-bust: 20260601-1655 (live-format extra phone number as user types; bundle index-CLQgZCFe.js, css index-D0a8jZap.css)
 // STAGING build — separate cache namespace
 // Wilbanks Company — Push Notification Service Worker
 const BADGE_KEY = "wilbanks_badge_count";
