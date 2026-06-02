@@ -1,4 +1,4 @@
-// cache-bust: 20260601-1730 (view + add secondary phones/emails when editing an appointment; bundle index-CngFxD98.js, css index-D0a8jZap.css)
+// cache-bust: 20260601-2050 (per-email invoice-recipient flag + per-appointment contact picker; bundle index-DVnrazkA.js, css index-D0a8jZap.css)
 // STAGING build — separate cache namespace
 // Wilbanks Company — Push Notification Service Worker
 const BADGE_KEY = "wilbanks_badge_count";
