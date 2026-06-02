@@ -1,4 +1,4 @@
-// cache-bust: 20260602-1233 (Month view opens Confirm Reschedule dialog; style Open as outlined button; bundle index-CbkQpHcj.js, css index-DXvT3-77.css)
+// cache-bust: 20260602-1352 (Priority feature: Service Details checkbox, amber chip accent bar, Priority pill in detail+dialog; JS index-6vo7TZYX.js, CSS index-CwdNYNcw.css)
 // STAGING build — separate cache namespace
 // Wilbanks Company — Push Notification Service Worker
 const BADGE_KEY = "wilbanks_badge_count";
