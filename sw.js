@@ -1,4 +1,4 @@
-// cache-bust: 20260601-2326 (Ready-to-Invoice pill now requires completed status; bundle index-CcbYS5F4.js, css index-D0a8jZap.css)
+// cache-bust: 20260602-0805 (AI-bar duplicate Merge optimistic + toast feedback; bundle index-Nqnc2pxe.js, css index-D0a8jZap.css)
 // STAGING build — separate cache namespace
 // Wilbanks Company — Push Notification Service Worker
 const BADGE_KEY = "wilbanks_badge_count";
