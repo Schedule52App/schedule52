@@ -1,4 +1,4 @@
-// cache-bust: 20260602-1153 (Moved/Rescheduled provenance: golden-yellow ring on moved chips + Moved legend; bundle index-w3eRTNuF.js, css index-DXvT3-77.css)
+// cache-bust: 20260602-1219 (Rescheduled provenance: rename legend 'Moved'->'Rescheduled' for field-app consistency; bundle index-Caf_oUuA.js, css index-DXvT3-77.css)
 // STAGING build — separate cache namespace
 // Wilbanks Company — Push Notification Service Worker
 const BADGE_KEY = "wilbanks_badge_count";
