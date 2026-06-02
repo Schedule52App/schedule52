@@ -1,4 +1,4 @@
-// cache-bust: 20260602-0828 (merge consumes server duplicates payload directly; bundle index-CyW9_Vun.js, css index-D0a8jZap.css)
+// cache-bust: 20260602-0934 (interactive Past Due Appointments panel; bundle index-DW6hmcBk.js, css index-uMRxfzis.css)
 // STAGING build — separate cache namespace
 // Wilbanks Company — Push Notification Service Worker
 const BADGE_KEY = "wilbanks_badge_count";
