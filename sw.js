@@ -1,4 +1,4 @@
-// cache-bust: 20260603-1715 (fix: day/week drag-reschedule shifts endTime so appt actually moves; JS index-Dk-_2q-2.js, CSS index-C9SLkwKQ.css)
+// cache-bust: 20260603-1722 (fix: day-view drag-reschedule uses dropped slot time; JS index-BE-G5OXW.js, CSS index-C9SLkwKQ.css)
 // STAGING build — separate cache namespace
 // Wilbanks Company — Push Notification Service Worker
 const BADGE_KEY = "wilbanks_badge_count";
