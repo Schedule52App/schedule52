@@ -1,4 +1,4 @@
-// cache-bust: 20260603-2128prioblk (Priority pill text -> black; JS index-BizWcdnb.js)
+// cache-bust: 20260603-2152prioink (Priority calendar chip -> fluorescent pink #ff10f0 both edges + legend; JS index-DnXuAGOl.js)
 // STAGING build — separate cache namespace
 // Wilbanks Company — Push Notification Service Worker
 const BADGE_KEY = "wilbanks_badge_count";
