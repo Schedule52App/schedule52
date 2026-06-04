@@ -1,4 +1,4 @@
-// cache-bust: 20260603-1815clean (day-view drag-reschedule FINAL clean build; JS index-BIWzkOfa.js)
+// cache-bust: 20260603-2035split (split-payment stacked pills per method + Total; JS index-JW_qZHau.js)
 // STAGING build — separate cache namespace
 // Wilbanks Company — Push Notification Service Worker
 const BADGE_KEY = "wilbanks_badge_count";
