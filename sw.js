@@ -1,4 +1,4 @@
-// cache-bust: 20260603-2110svcaddr (Edit Appointment Service Address card; JS index-BRgYsHOh.js)
+// cache-bust: 20260603-2128prioblk (Priority pill text -> black; JS index-BizWcdnb.js)
 // STAGING build — separate cache namespace
 // Wilbanks Company — Push Notification Service Worker
 const BADGE_KEY = "wilbanks_badge_count";
