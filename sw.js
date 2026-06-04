@@ -1,4 +1,4 @@
-// cache-bust: 20260604-1420priopink (Priority checkbox accent fluorescent pink ff10f0; JS index-CRuqzLpM.js CSS index-V4ZrJKAc.css)
+// cache-bust: 20260604-1500mapskey (restore Google Maps Places key -> address autocomplete works again, Customer Info + Service Street; JS index-CyDehQip.js)
 // STAGING build — separate cache namespace
 // Wilbanks Company — Push Notification Service Worker
 const BADGE_KEY = "wilbanks_badge_count";
