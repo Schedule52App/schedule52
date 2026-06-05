@@ -1,4 +1,4 @@
-// cache-bust: 20260605-204943 wc-v153 finance-dedupe-reports
+// cache-bust: 20260605-205724 wc-v154 settings-tabs-qb
 // STAGING build — separate cache namespace
 // Wilbanks Company — Push Notification Service Worker
 const BADGE_KEY = "wilbanks_badge_count";
