@@ -1,4 +1,4 @@
-// cache-bust: 20260605-1622finance (Finance module added; JS index-DXaWzDdo.js)
+// cache-bust: 20260605-1803cancelfix (cancelled appts off calendar; Reports KPI clickable; JS index-CoSArc41.js)
 // STAGING build — separate cache namespace
 // Wilbanks Company — Push Notification Service Worker
 const BADGE_KEY = "wilbanks_badge_count";
