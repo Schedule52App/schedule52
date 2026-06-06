@@ -1,5 +1,5 @@
-// cache-bust: 20260606-2101 wc-v159 qb-reconcile-sync
-const CACHE = "wc-v159";
+// cache-bust: 20260606-2342 wc-v160 tech-color-swimlanes
+const CACHE = "wc-v160";
 const OFFLINE = ["/", "/index.html"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE)));
