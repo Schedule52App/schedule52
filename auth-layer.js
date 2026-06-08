@@ -1678,16 +1678,24 @@
 
   function logout() {
     // wc-v219: full cleanup so next user lands fresh on default route
+    // wc-v222: also clears wc_prefs_cache_* (per-user pre-paint cache) and
+    //         the legacy hyphenated wc-theme key.
     // Clear hash + saved hash so we don't restore prior admin's last screen
     try { sessionStorage.removeItem('wc_last_hash'); } catch (e) {}
     try { window.location.hash = ''; } catch (e) {}
-    // Sweep all wc_* localStorage keys EXCEPT wc_saved_username (remember me)
+    // Sweep all wc_* localStorage keys EXCEPT wc_saved_username (remember me).
+    // Also catch the hyphenated legacy `wc-theme` key (does not match wc_*).
     try {
       var preserve = { 'wc_saved_username': 1 };
       var toRemove = [];
       for (var i = 0; i < localStorage.length; i++) {
         var k = localStorage.key(i);
-        if (k && k.indexOf('wc_') === 0 && !preserve[k]) toRemove.push(k);
+        if (!k) continue;
+        // wc_* (underscore) — original sweep
+        if (k.indexOf('wc_') === 0 && !preserve[k]) { toRemove.push(k); continue; }
+        // wc-theme (hyphen) — legacy per-device theme key; safe to drop, the
+        // pre-paint inline script now reads from wc_prefs_cache_<uid>.
+        if (k === 'wc-theme') { toRemove.push(k); continue; }
       }
       for (var j = 0; j < toRemove.length; j++) localStorage.removeItem(toRemove[j]);
     } catch (e) {}
