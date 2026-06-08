@@ -1,5 +1,5 @@
-// cache-bust: 20260608-2245 wc-v230 customer-sync-audit-admin-tool
-const CACHE = "wc-v230";
+// cache-bust: 20260608-2257 wc-v231 inspect-button-on-appt-detail
+const CACHE = "wc-v231";
 const OFFLINE = ["/", "/index.html"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE)));
