@@ -1,5 +1,5 @@
-// cache-bust: 20260608-2352 wc-v239 dashboard-render-gate-no-flash
-const CACHE = "wc-v239";
+// cache-bust: 20260608-2358 wc-v240 outstanding-tile-token-from-sessionstorage
+const CACHE = "wc-v240";
 const OFFLINE = ["/", "/index.html"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE)));
