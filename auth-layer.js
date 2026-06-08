@@ -1770,6 +1770,12 @@
           window.__WC_USER = user;
           publishUserRole(user);
           window.__WC_LOGOUT = logout;
+          // wc-v224 fix: fire the auth-ready signal on existing-session boot
+          // too (previously only fired from launchApp() on fresh login). The
+          // useCurrentUser hook depends on this; without it, the user badge
+          // stays blank on any tab that boots via seed-hop or hard refresh.
+          window.__WC_AUTH_READY = true;
+          try { window.dispatchEvent(new CustomEvent("wc:auth-ready")); } catch {}
           // Token valid — show app and inject UI elements
           if (root) root.style.display = "";
           // Restore the hash route from before the refresh
