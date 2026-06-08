@@ -1,5 +1,5 @@
-// cache-bust: 20260608-1300 wc-v220 user-lockout
-const CACHE = "wc-v220";
+// cache-bust: 20260608-1500 wc-v221 server-prefs
+const CACHE = "wc-v221";
 const OFFLINE = ["/", "/index.html"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE)));
