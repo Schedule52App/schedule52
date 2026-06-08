@@ -1,5 +1,5 @@
-// cache-bust: 20260608-2030 wc-v224b strict-per-tab
-const CACHE = "wc-v224b";
+// cache-bust: 20260608-2045 wc-v224c default-cal-view-remount
+const CACHE = "wc-v224c";
 const OFFLINE = ["/", "/index.html"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE)));
