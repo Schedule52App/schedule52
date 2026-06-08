@@ -34,12 +34,13 @@
         // primary so the session survives iOS Safari tab suspension + home-screen relaunch.
         localStorage.setItem(TOKEN_KEY, token);
       } else {
-        // Dashboard (wc-v224 Phase 1: per-tab session isolation).
-        //   sessionStorage = "who am I in this tab" (source of truth, isolated per tab)
-        //   localStorage   = seed for NEW tabs only (so opening a new tab doesn't force re-login)
-        // Logout in any tab clears the seed; other open tabs keep their sessionStorage.
+        // Dashboard (wc-v224b: FULLY STRICT per-tab login).
+        //   sessionStorage only — each tab is its own session, no inheritance.
+        //   Every new tab forces a fresh login. Hard refresh keeps the session
+        //   (sessionStorage survives reloads). Closing the tab ends the session.
         sessionStorage.setItem(TOKEN_KEY, token);
-        localStorage.setItem(TOKEN_KEY, token);
+        // Defensive: nuke any stale localStorage seed from a prior wc-v224 boot.
+        try { localStorage.removeItem(TOKEN_KEY); } catch {}
       }
     } catch {}
   }
@@ -49,18 +50,11 @@
       if (isFieldApp()) {
         _token = localStorage.getItem(TOKEN_KEY) || sessionStorage.getItem(TOKEN_KEY) || null;
       } else {
-        // Dashboard: sessionStorage primary. If empty, seed from localStorage
-        // (one-time hop for new tabs) and copy into sessionStorage so this tab
-        // owns its session from here on.
-        let t = sessionStorage.getItem(TOKEN_KEY);
-        if (!t) {
-          const seed = localStorage.getItem(TOKEN_KEY);
-          if (seed) {
-            try { sessionStorage.setItem(TOKEN_KEY, seed); } catch {}
-            t = seed;
-          }
-        }
-        _token = t || null;
+        // Dashboard: sessionStorage only. No localStorage fallback — strict per-tab.
+        _token = sessionStorage.getItem(TOKEN_KEY) || null;
+        // Defensive: if a stale localStorage seed survived from an earlier
+        // wc-v224 build, drop it. We do NOT use it.
+        try { if (localStorage.getItem(TOKEN_KEY)) localStorage.removeItem(TOKEN_KEY); } catch {}
       }
     } catch {}
     return _token;
@@ -1872,8 +1866,13 @@
     if (e.persisted) {
       // Page was restored from bfcache — check if token is gone from storage
       const stored = (function() {
-        // wc-v224: dashboard sessionStorage is source of truth; check both.
-        try { return sessionStorage.getItem('wc_auth_token') || localStorage.getItem('wc_auth_token'); } catch { return null; }
+        // wc-v224b: dashboard is sessionStorage-only; field-tech keeps localStorage.
+        try {
+          if (isFieldApp()) {
+            return localStorage.getItem('wc_auth_token') || sessionStorage.getItem('wc_auth_token');
+          }
+          return sessionStorage.getItem('wc_auth_token');
+        } catch { return null; }
       })();
       if (!stored) {
         // Token gone but bfcache restored old state — force fresh load
