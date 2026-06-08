@@ -792,6 +792,13 @@
 
   // ── User Management ────────────────────────────────────────────────────────
   function injectAdminToolsNav() {
+    // wc-v203: Admin Tools folder retired from the left sidebar. All four items
+    // (Settings, Users & Roles, Audit Log, Deleted Jobs) now live as tabs inside
+    // the React Settings page. Also clean up any previously-injected group that a
+    // stale cached build may have left in the DOM.
+    document.getElementById('wc-admin-tools-group')?.remove();
+    return;
+    /* eslint-disable no-unreachable */
     const role = currentUser?.role;
     if (role !== 'admin') return;
     const isAdmin = true;
@@ -1511,9 +1518,12 @@
       const mobileMenu = document.querySelector('.md\\:hidden.fixed.top-\\[57px\\]');
       if (!mobileMenu) return;
 
+      // wc-v203: mobile Admin Tools section retired — items now live as Settings tabs.
+      // Clean up any stale injected section, then skip rebuilding it.
+      mobileMenu.querySelector('#wc-mobile-admin-section')?.remove();
       // Inject collapsible Admin Tools section for admin/both roles
       const role = currentUser?.role;
-      if (role === 'admin' || role === 'both') {
+      if (false && (role === 'admin' || role === 'both')) {
         // Only rebuild if not already present — avoid clobbering open/close state
         if (mobileMenu.querySelector('#wc-mobile-admin-section')) return;
 
