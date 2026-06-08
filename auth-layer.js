@@ -1462,28 +1462,30 @@
   function injectLogoutButton() {
     document.getElementById('wc-logout-btn')?.remove();
 
-    // Build a sidebar-style logout button (dashboard desktop)
+    // Build a sidebar-style logout button (dashboard desktop).
+    // wc-v204: compact rail style — icon stacked above a small label — to match
+    // the 104px icon rail (Dashboard/Techs/Settings/etc.).
     function buildSidebarBtn() {
       const btn = document.createElement('button');
       btn.id = 'wc-logout-btn';
+      btn.title = 'Sign Out';
       btn.innerHTML = `
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0">
           <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
           <polyline points="16,17 21,12 16,7"/>
           <line x1="21" y1="12" x2="9" y2="12"/>
         </svg>
-        Sign Out
+        <span style="line-height:1.1;text-align:center">Sign Out</span>
       `;
       Object.assign(btn.style, {
-        display: 'flex', alignItems: 'center', gap: '12px',
-        width: '100%', padding: '10px 12px',
+        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '2px',
+        width: '100%', padding: '4px',
         background: 'transparent', border: 'none',
-        borderRadius: '6px', cursor: 'pointer',
-        fontSize: '14px', fontWeight: '500',
+        borderRadius: '8px', cursor: 'pointer',
+        fontSize: '10px', fontWeight: '600',
         color: '#ef4444',
         fontFamily: 'inherit',
         transition: 'background 0.15s',
-        marginTop: '4px',
       });
       btn.addEventListener('mouseenter', () => btn.style.background = 'rgba(239,68,68,0.1)');
       btn.addEventListener('mouseleave', () => btn.style.background = 'transparent');
@@ -1497,11 +1499,17 @@
       if (confirm('Sign out of Wilbanks Company?')) logout();
     }
 
-    // Strategy 1a: Dashboard desktop sidebar — inject below theme toggle
+    // Strategy 1a: Dashboard desktop sidebar — inject into the dedicated
+    // #wc-sidebar-footer slot the React rail renders at the bottom of <nav>.
+    // wc-v204: the old anchor ([data-testid="button-toggle-theme"]) was removed
+    // from the rail in v197 (theme moved into Settings), which silently dropped
+    // the desktop Sign Out button. Anchor to the footer slot instead.
     function tryInjectSidebar() {
-      const themeBtn = document.querySelector('[data-testid="button-toggle-theme"]');
-      if (themeBtn && !document.getElementById('wc-logout-btn')) {
-        themeBtn.parentElement?.appendChild(buildSidebarBtn());
+      const footer = document.getElementById('wc-sidebar-footer');
+      if (footer) {
+        if (!footer.querySelector('#wc-logout-btn')) {
+          footer.appendChild(buildSidebarBtn());
+        }
         return true;
       }
       return false;
