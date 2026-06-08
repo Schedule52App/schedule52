@@ -1677,10 +1677,26 @@
   }
 
   function logout() {
+    // wc-v219: full cleanup so next user lands fresh on default route
+    // Clear hash + saved hash so we don't restore prior admin's last screen
+    try { sessionStorage.removeItem('wc_last_hash'); } catch (e) {}
+    try { window.location.hash = ''; } catch (e) {}
+    // Sweep all wc_* localStorage keys EXCEPT wc_saved_username (remember me)
+    try {
+      var preserve = { 'wc_saved_username': 1 };
+      var toRemove = [];
+      for (var i = 0; i < localStorage.length; i++) {
+        var k = localStorage.key(i);
+        if (k && k.indexOf('wc_') === 0 && !preserve[k]) toRemove.push(k);
+      }
+      for (var j = 0; j < toRemove.length; j++) localStorage.removeItem(toRemove[j]);
+    } catch (e) {}
+    // Clear field-tech session marker as well
+    try { sessionStorage.removeItem('techName'); } catch (e) {}
     clearToken();
-    try { localStorage.removeItem('wc_user_role'); } catch (e) {}
     // Full page reload — matches production exactly
-    window.location.reload();
+    // Navigate to root so reload lands on default landing screen
+    try { window.location.replace(window.location.pathname + window.location.search); } catch (e) { window.location.reload(); }
   }
 
   // Expose logout globally
