@@ -1,0 +1,621 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>v251 Brand Band Mockup — Wilbanks Scheduler</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #1e293b;
+    --panel-2: #111827;
+    --border: #1f2937;
+    --rail: #0b1220;
+    --rail-border: #1f2937;
+    --text: #e5e7eb;
+    --text-dim: #94a3b8;
+    --text-fade: #6b7280;
+    --accent: #3b82f6;
+    --accent-active: #2563eb;
+    --good: #22c55e;
+    --bad: #ef4444;
+    --warn: #f59e0b;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #020617; color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  body { padding: 24px; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  .lede { color: var(--text-dim); font-size: 14px; max-width: 900px; margin-bottom: 6px; }
+  .footnote { color: var(--text-fade); font-size: 12px; max-width: 900px; margin-bottom: 24px; }
+
+  /* Scenario card containing the full app shell mockup */
+  .scenario {
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  .scenario header {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+    background: #0f172a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  .scenario h2 {
+    font-size: 15px;
+    margin: 0;
+    color: var(--text);
+  }
+  .scenario .pill {
+    display: inline-block;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: rgba(59,130,246,0.15);
+    color: #93c5fd;
+    border: 1px solid rgba(59,130,246,0.3);
+  }
+  .scenario .pill.legacy { background: rgba(239,68,68,0.12); color: #fca5a5; border-color: rgba(239,68,68,0.3); }
+  .scenario .pill.proposed { background: rgba(34,197,94,0.12); color: #86efac; border-color: rgba(34,197,94,0.3); }
+  .scenario .blurb { color: var(--text-dim); font-size: 12px; }
+
+  /* ============================================================ */
+  /* APP SHELL: brand band on top, rail + main below               */
+  /* ============================================================ */
+  .app {
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    min-height: 560px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* Brand band — full viewport width, configurable height */
+  .band {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 20px;
+    background: linear-gradient(180deg, #0b1220 0%, #0f172a 100%);
+    border-bottom: 1px solid var(--rail-border);
+    flex-shrink: 0;
+  }
+  .band.compact { height: 56px; padding: 8px 20px; }
+  .band.comfort { height: 72px; padding: 10px 20px; }
+  .band.roomy   { height: 96px; padding: 14px 24px; }
+
+  .band-logo {
+    background: #ffffff;
+    border-radius: 8px;
+    flex-shrink: 0;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .band.compact .band-logo { height: 40px; min-width: 40px; }
+  .band.comfort .band-logo { height: 52px; min-width: 52px; }
+  .band.roomy   .band-logo { height: 68px; min-width: 68px; }
+
+  .band-logo img {
+    display: block;
+    width: auto;
+    height: 100%;
+    max-width: 320px;
+    object-fit: contain;
+  }
+  /* When the logo is a wide wordmark, allow it more horizontal room */
+  .band.wordmark .band-logo img { max-width: 480px; }
+
+  .band-text { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+  .band-name {
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .band-tag {
+    color: var(--text-dim);
+    line-height: 1.3;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .band.compact .band-name { font-size: 16px; }
+  .band.compact .band-tag  { font-size: 12px; }
+  .band.comfort .band-name { font-size: 19px; }
+  .band.comfort .band-tag  { font-size: 13px; }
+  .band.roomy   .band-name { font-size: 24px; }
+  .band.roomy   .band-tag  { font-size: 14px; }
+
+  /* Right side of the band: user chip */
+  .band-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    padding-left: 16px;
+    border-left: 1px solid var(--rail-border);
+  }
+  .band-user .avatar {
+    width: 32px; height: 32px; border-radius: 999px;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 13px;
+  }
+  .band-user .name { font-size: 13px; color: white; line-height: 1.2; font-weight: 600; }
+  .band-user .role { font-size: 11px; color: var(--text-dim); line-height: 1.2; }
+
+  /* Body row: rail + main */
+  .body { display: flex; flex: 1; }
+
+  /* Pure-nav rail (still 104px, but only icons + labels now) */
+  .rail {
+    width: 104px;
+    background: #0b1220;
+    border-right: 1px solid var(--rail-border);
+    flex-shrink: 0;
+    padding: 8px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  /* OR — narrower rail option (80px) demonstrating "room to breathe" */
+  .rail.narrow { width: 80px; }
+
+  .rail-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 10px 4px;
+    color: var(--text-dim);
+    font-size: 11px;
+    text-align: center;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+    user-select: none;
+  }
+  .rail-item:hover { background: rgba(255,255,255,0.04); color: white; }
+  .rail-item.active {
+    background: rgba(59,130,246,0.12);
+    color: #93c5fd;
+    border-left-color: var(--accent-active);
+  }
+  .rail-icon {
+    width: 24px; height: 24px;
+    background: currentColor;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+  }
+  .icon-dash { -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='7' height='9'/><rect x='14' y='3' width='7' height='5'/><rect x='14' y='12' width='7' height='9'/><rect x='3' y='16' width='7' height='5'/></svg>"); mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='3' y='3' width='7' height='9'/><rect x='14' y='3' width='7' height='5'/><rect x='14' y='12' width='7' height='9'/><rect x='3' y='16' width='7' height='5'/></svg>"); }
+  .icon-add { -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='12' y1='5' x2='12' y2='19'/><line x1='5' y1='12' x2='19' y2='12'/></svg>"); mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='12' y1='5' x2='12' y2='19'/><line x1='5' y1='12' x2='19' y2='12'/></svg>"); }
+  .icon-techs { -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'/><circle cx='9' cy='7' r='4'/><path d='M23 21v-2a4 4 0 0 0-3-3.87'/><path d='M16 3.13a4 4 0 0 1 0 7.75'/></svg>"); mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'/><circle cx='9' cy='7' r='4'/><path d='M23 21v-2a4 4 0 0 0-3-3.87'/><path d='M16 3.13a4 4 0 0 1 0 7.75'/></svg>"); }
+  .icon-money { -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='12' y1='1' x2='12' y2='23'/><path d='M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6'/></svg>"); mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='12' y1='1' x2='12' y2='23'/><path d='M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6'/></svg>"); }
+  .icon-jobs { -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><polyline points='14 2 14 8 20 8'/></svg>"); mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><polyline points='14 2 14 8 20 8'/></svg>"); }
+  .icon-cust { -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'/><circle cx='12' cy='7' r='4'/></svg>"); mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'/><circle cx='12' cy='7' r='4'/></svg>"); }
+  .icon-rep { -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='20' x2='18' y2='10'/><line x1='12' y1='20' x2='12' y2='4'/><line x1='6' y1='20' x2='6' y2='14'/></svg>"); mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='20' x2='18' y2='10'/><line x1='12' y1='20' x2='12' y2='4'/><line x1='6' y1='20' x2='6' y2='14'/></svg>"); }
+  .icon-settings { -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='3'/><path d='M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z'/></svg>"); mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='3'/><path d='M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z'/></svg>"); }
+
+  /* Main content stub */
+  .main {
+    flex: 1;
+    padding: 20px 24px;
+    overflow: hidden;
+  }
+  .main h3 { font-size: 18px; margin: 0 0 8px; color: white; }
+  .main p { color: var(--text-dim); font-size: 13px; margin: 0 0 12px; max-width: 540px; }
+  .stub-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 14px; }
+  .stub-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    height: 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .stub-card .k { font-size: 11px; color: var(--text-fade); text-transform: uppercase; letter-spacing: 0.05em; }
+  .stub-card .v { font-size: 22px; font-weight: 700; color: white; }
+
+  /* ============================================================ */
+  /* LEGACY RAIL-ONLY (the current production shape, for compare) */
+  /* ============================================================ */
+  .legacy-shell { display: flex; min-height: 560px; background: var(--bg); border-top: 1px solid var(--border); }
+  .legacy-rail {
+    width: 104px;
+    background: #0b1220;
+    border-right: 1px solid var(--rail-border);
+    padding: 10px 6px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .legacy-rail .legacy-logo {
+    width: 64px; height: 64px;
+    background: white;
+    border-radius: 10px;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .legacy-rail .legacy-logo img { width: 100%; height: 100%; object-fit: contain; }
+  .legacy-rail .legacy-name {
+    font-size: 11px; font-weight: 700; color: white; text-align: center; line-height: 1.15; width: 100%;
+  }
+  .legacy-rail .legacy-tag {
+    font-size: 10px; color: var(--text-fade); text-align: center; line-height: 1.2; width: 100%;
+    /* No tagline shown today because it doesn't fit. Show it here in red to make the issue obvious. */
+    color: #ef4444;
+  }
+  .legacy-rail .legacy-tag .strike { text-decoration: line-through; opacity: 0.7; }
+  .legacy-rail .legacy-divider { width: 80%; height: 1px; background: var(--rail-border); margin: 4px 0; }
+  .legacy-rail .legacy-items { display: flex; flex-direction: column; gap: 2px; width: 100%; }
+
+  .label-row { display: flex; gap: 8px; align-items: center; margin-bottom: 14px; }
+  .label-chip {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(148,163,184,0.1);
+    color: var(--text-dim);
+    border: 1px solid rgba(148,163,184,0.2);
+  }
+</style>
+</head>
+<body>
+
+<h1>v251 Brand Band — Proposed Dashboard Layout</h1>
+<p class="lede">
+  Moves the company logo + name + tagline out of the cramped 104px rail and into a full-width band above the entire app shell.
+  The rail becomes a pure icon nav. The logo gets ~520px of horizontal room (instead of 88px) so wordmarks and taglines actually fit.
+</p>
+<p class="footnote">
+  All scenarios use the real Wilbanks logo. The right-side user chip is illustrative only.
+  Resize this window to ~1280px or 1440px to see how it'd render on your normal laptop.
+</p>
+
+<!-- =================================================================== -->
+<!-- 1. LEGACY SHAPE FOR COMPARE                                          -->
+<!-- =================================================================== -->
+<section class="scenario">
+  <header>
+    <h2>1. What you have today <span class="pill legacy">Production (wc-v250a)</span></h2>
+    <span class="blurb">Tagline can't render — rail is 104px wide, "Cooling • Heating • Plumbing" needs ~190px.</span>
+  </header>
+  <div class="legacy-shell">
+    <aside class="legacy-rail">
+      <div class="legacy-logo">
+        <img src="/wilbanks-scheduler-staging/assets/logo-DmC-dsba.jpg" alt="Wilbanks">
+      </div>
+      <div class="legacy-name">Wilbanks Company</div>
+      <div class="legacy-tag"><span class="strike">Cooling • Heating • Plumbing</span></div>
+      <div class="legacy-divider"></div>
+      <div class="legacy-items">
+        <div class="rail-item active"><div class="rail-icon icon-dash"></div>Dashboard</div>
+        <div class="rail-item"><div class="rail-icon icon-add"></div>New Job</div>
+        <div class="rail-item"><div class="rail-icon icon-techs"></div>Techs</div>
+        <div class="rail-item"><div class="rail-icon icon-money"></div>Financials</div>
+        <div class="rail-item"><div class="rail-icon icon-jobs"></div>Jobs</div>
+        <div class="rail-item"><div class="rail-icon icon-cust"></div>Customers</div>
+        <div class="rail-item"><div class="rail-icon icon-rep"></div>Reports</div>
+        <div class="rail-item"><div class="rail-icon icon-settings"></div>Settings</div>
+      </div>
+    </aside>
+    <main class="main">
+      <h3>Dashboard</h3>
+      <p>Today's stub content — the rail is doing double duty as branding AND navigation, and the brand half is losing.</p>
+      <div class="stub-cards">
+        <div class="stub-card"><div class="k">Open jobs</div><div class="v">12</div></div>
+        <div class="stub-card"><div class="k">Today</div><div class="v">4</div></div>
+        <div class="stub-card"><div class="k">Unbilled</div><div class="v">$3.2k</div></div>
+        <div class="stub-card"><div class="k">Past due</div><div class="v">$640</div></div>
+      </div>
+    </main>
+  </div>
+</section>
+
+<!-- =================================================================== -->
+<!-- 2. BRAND BAND — COMFORTABLE (default, recommended)                  -->
+<!-- =================================================================== -->
+<section class="scenario">
+  <header>
+    <h2>2. Brand band — Comfortable (default) <span class="pill proposed">Proposed v251</span></h2>
+    <span class="blurb">72px tall band, logo and full tagline render at native size.</span>
+  </header>
+  <div class="app">
+    <div class="band comfort">
+      <div class="band-logo"><img src="/wilbanks-scheduler-staging/assets/logo-DmC-dsba.jpg" alt="Wilbanks Company"></div>
+      <div class="band-text">
+        <div class="band-name">Wilbanks Company</div>
+        <div class="band-tag">Cooling • Heating • Plumbing</div>
+      </div>
+      <div class="band-user">
+        <div class="avatar">GW</div>
+        <div>
+          <div class="name">Glenn Wilbanks</div>
+          <div class="role">Administrator</div>
+        </div>
+      </div>
+    </div>
+    <div class="body">
+      <aside class="rail">
+        <div class="rail-item active"><div class="rail-icon icon-dash"></div>Dashboard</div>
+        <div class="rail-item"><div class="rail-icon icon-add"></div>New Job</div>
+        <div class="rail-item"><div class="rail-icon icon-techs"></div>Techs</div>
+        <div class="rail-item"><div class="rail-icon icon-money"></div>Financials</div>
+        <div class="rail-item"><div class="rail-icon icon-jobs"></div>Jobs</div>
+        <div class="rail-item"><div class="rail-icon icon-cust"></div>Customers</div>
+        <div class="rail-item"><div class="rail-icon icon-rep"></div>Reports</div>
+        <div class="rail-item"><div class="rail-icon icon-settings"></div>Settings</div>
+      </aside>
+      <main class="main">
+        <h3>Dashboard</h3>
+        <p>Same rail, same main content. The branding now lives in the band where there's room for it.</p>
+        <div class="stub-cards">
+          <div class="stub-card"><div class="k">Open jobs</div><div class="v">12</div></div>
+          <div class="stub-card"><div class="k">Today</div><div class="v">4</div></div>
+          <div class="stub-card"><div class="k">Unbilled</div><div class="v">$3.2k</div></div>
+          <div class="stub-card"><div class="k">Past due</div><div class="v">$640</div></div>
+        </div>
+      </main>
+    </div>
+  </div>
+</section>
+
+<!-- =================================================================== -->
+<!-- 3. BRAND BAND — COMPACT                                              -->
+<!-- =================================================================== -->
+<section class="scenario">
+  <header>
+    <h2>3. Brand band — Compact <span class="pill proposed">Proposed v251 · size knob = sm</span></h2>
+    <span class="blurb">56px tall — minimum chrome, maximum room for the dashboard.</span>
+  </header>
+  <div class="app">
+    <div class="band compact">
+      <div class="band-logo"><img src="/wilbanks-scheduler-staging/assets/logo-DmC-dsba.jpg" alt="Wilbanks Company"></div>
+      <div class="band-text">
+        <div class="band-name">Wilbanks Company</div>
+        <div class="band-tag">Cooling • Heating • Plumbing</div>
+      </div>
+      <div class="band-user">
+        <div class="avatar">GW</div>
+        <div>
+          <div class="name">Glenn Wilbanks</div>
+          <div class="role">Administrator</div>
+        </div>
+      </div>
+    </div>
+    <div class="body">
+      <aside class="rail">
+        <div class="rail-item active"><div class="rail-icon icon-dash"></div>Dashboard</div>
+        <div class="rail-item"><div class="rail-icon icon-add"></div>New Job</div>
+        <div class="rail-item"><div class="rail-icon icon-techs"></div>Techs</div>
+        <div class="rail-item"><div class="rail-icon icon-money"></div>Financials</div>
+        <div class="rail-item"><div class="rail-icon icon-jobs"></div>Jobs</div>
+        <div class="rail-item"><div class="rail-icon icon-cust"></div>Customers</div>
+        <div class="rail-item"><div class="rail-icon icon-rep"></div>Reports</div>
+        <div class="rail-item"><div class="rail-icon icon-settings"></div>Settings</div>
+      </aside>
+      <main class="main">
+        <h3>Dashboard</h3>
+        <p>Lose ~16px vertical vs Comfortable. Best for laptops with limited screen height.</p>
+        <div class="stub-cards">
+          <div class="stub-card"><div class="k">Open jobs</div><div class="v">12</div></div>
+          <div class="stub-card"><div class="k">Today</div><div class="v">4</div></div>
+        </div>
+      </main>
+    </div>
+  </div>
+</section>
+
+<!-- =================================================================== -->
+<!-- 4. BRAND BAND — ROOMY                                                -->
+<!-- =================================================================== -->
+<section class="scenario">
+  <header>
+    <h2>4. Brand band — Roomy <span class="pill proposed">Proposed v251 · size knob = lg</span></h2>
+    <span class="blurb">96px tall — feels like a "real" brand bar; good for tenants who want the logo to be a focal point.</span>
+  </header>
+  <div class="app">
+    <div class="band roomy">
+      <div class="band-logo"><img src="/wilbanks-scheduler-staging/assets/logo-DmC-dsba.jpg" alt="Wilbanks Company"></div>
+      <div class="band-text">
+        <div class="band-name">Wilbanks Company</div>
+        <div class="band-tag">Cooling • Heating • Plumbing</div>
+      </div>
+      <div class="band-user">
+        <div class="avatar">GW</div>
+        <div>
+          <div class="name">Glenn Wilbanks</div>
+          <div class="role">Administrator</div>
+        </div>
+      </div>
+    </div>
+    <div class="body">
+      <aside class="rail">
+        <div class="rail-item active"><div class="rail-icon icon-dash"></div>Dashboard</div>
+        <div class="rail-item"><div class="rail-icon icon-add"></div>New Job</div>
+        <div class="rail-item"><div class="rail-icon icon-techs"></div>Techs</div>
+        <div class="rail-item"><div class="rail-icon icon-money"></div>Financials</div>
+        <div class="rail-item"><div class="rail-icon icon-jobs"></div>Jobs</div>
+        <div class="rail-item"><div class="rail-icon icon-cust"></div>Customers</div>
+        <div class="rail-item"><div class="rail-icon icon-rep"></div>Reports</div>
+        <div class="rail-item"><div class="rail-icon icon-settings"></div>Settings</div>
+      </aside>
+      <main class="main">
+        <h3>Dashboard</h3>
+        <p>Costs ~40px vertical vs Comfortable. Tradeoff: more presence, less content.</p>
+        <div class="stub-cards">
+          <div class="stub-card"><div class="k">Open jobs</div><div class="v">12</div></div>
+        </div>
+      </main>
+    </div>
+  </div>
+</section>
+
+<!-- =================================================================== -->
+<!-- 5. WIDE WORDMARK SCENARIO (future tenant)                            -->
+<!-- =================================================================== -->
+<section class="scenario">
+  <header>
+    <h2>5. Wide wordmark scenario <span class="pill">Future tenant simulation</span></h2>
+    <span class="blurb">SVG wordmark in lockup mode (mode hides the text since the logo already includes it). 480px of horizontal room.</span>
+  </header>
+  <div class="app">
+    <div class="band comfort wordmark">
+      <div class="band-logo">
+        <!-- Inline SVG wordmark to simulate "ACME PLUMBING & HEATING" -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 80" style="height:100%;width:auto;max-width:480px">
+          <rect width="380" height="80" fill="white"/>
+          <g transform="translate(12,22)">
+            <circle cx="20" cy="20" r="18" fill="#0ea5e9"/>
+            <path d="M11 24 L20 12 L29 24 Z" fill="white"/>
+            <text x="52" y="22" font-family="Georgia, serif" font-size="22" font-weight="700" fill="#0f172a">ACME PLUMBING</text>
+            <text x="52" y="42" font-family="Georgia, serif" font-size="13" fill="#475569" letter-spacing="2">&amp; HEATING CO.</text>
+          </g>
+        </svg>
+      </div>
+      <div class="band-user">
+        <div class="avatar">JD</div>
+        <div>
+          <div class="name">Jane Doe</div>
+          <div class="role">Administrator</div>
+        </div>
+      </div>
+    </div>
+    <div class="body">
+      <aside class="rail">
+        <div class="rail-item active"><div class="rail-icon icon-dash"></div>Dashboard</div>
+        <div class="rail-item"><div class="rail-icon icon-add"></div>New Job</div>
+        <div class="rail-item"><div class="rail-icon icon-techs"></div>Techs</div>
+        <div class="rail-item"><div class="rail-icon icon-money"></div>Financials</div>
+        <div class="rail-item"><div class="rail-icon icon-jobs"></div>Jobs</div>
+        <div class="rail-item"><div class="rail-icon icon-cust"></div>Customers</div>
+        <div class="rail-item"><div class="rail-icon icon-rep"></div>Reports</div>
+        <div class="rail-item"><div class="rail-icon icon-settings"></div>Settings</div>
+      </aside>
+      <main class="main">
+        <h3>Dashboard</h3>
+        <p>Wide wordmarks like this absolutely cannot fit in a 104px rail. The band shape handles them naturally.</p>
+        <div class="stub-cards">
+          <div class="stub-card"><div class="k">Open jobs</div><div class="v">7</div></div>
+          <div class="stub-card"><div class="k">Today</div><div class="v">2</div></div>
+          <div class="stub-card"><div class="k">Unbilled</div><div class="v">$1.8k</div></div>
+        </div>
+      </main>
+    </div>
+  </div>
+</section>
+
+<!-- =================================================================== -->
+<!-- 6. NO LOGO (text-only fallback)                                      -->
+<!-- =================================================================== -->
+<section class="scenario">
+  <header>
+    <h2>6. No logo — text-only fallback <span class="pill">Tenant hasn't uploaded yet</span></h2>
+    <span class="blurb">Render mode = "none". Company name + tagline only, larger typography fills the space.</span>
+  </header>
+  <div class="app">
+    <div class="band comfort">
+      <div class="band-text" style="padding-left:4px">
+        <div class="band-name">Wilbanks Company</div>
+        <div class="band-tag">Cooling • Heating • Plumbing</div>
+      </div>
+      <div class="band-user">
+        <div class="avatar">GW</div>
+        <div>
+          <div class="name">Glenn Wilbanks</div>
+          <div class="role">Administrator</div>
+        </div>
+      </div>
+    </div>
+    <div class="body">
+      <aside class="rail">
+        <div class="rail-item active"><div class="rail-icon icon-dash"></div>Dashboard</div>
+        <div class="rail-item"><div class="rail-icon icon-add"></div>New Job</div>
+        <div class="rail-item"><div class="rail-icon icon-techs"></div>Techs</div>
+        <div class="rail-item"><div class="rail-icon icon-money"></div>Financials</div>
+        <div class="rail-item"><div class="rail-icon icon-jobs"></div>Jobs</div>
+        <div class="rail-item"><div class="rail-icon icon-cust"></div>Customers</div>
+        <div class="rail-item"><div class="rail-icon icon-rep"></div>Reports</div>
+        <div class="rail-item"><div class="rail-icon icon-settings"></div>Settings</div>
+      </aside>
+      <main class="main">
+        <h3>Dashboard</h3>
+        <p>No logo uploaded yet — band still looks intentional, not broken.</p>
+      </main>
+    </div>
+  </div>
+</section>
+
+<!-- =================================================================== -->
+<!-- 7. NARROW RAIL OPTION                                                -->
+<!-- =================================================================== -->
+<section class="scenario">
+  <header>
+    <h2>7. Bonus: 80px rail option <span class="pill">If you want more room for main content</span></h2>
+    <span class="blurb">Since branding has moved out, the rail no longer needs to be 104px. Shrink to 80px for ~24px more main-content width.</span>
+  </header>
+  <div class="app">
+    <div class="band comfort">
+      <div class="band-logo"><img src="/wilbanks-scheduler-staging/assets/logo-DmC-dsba.jpg" alt="Wilbanks Company"></div>
+      <div class="band-text">
+        <div class="band-name">Wilbanks Company</div>
+        <div class="band-tag">Cooling • Heating • Plumbing</div>
+      </div>
+      <div class="band-user">
+        <div class="avatar">GW</div>
+        <div>
+          <div class="name">Glenn Wilbanks</div>
+          <div class="role">Administrator</div>
+        </div>
+      </div>
+    </div>
+    <div class="body">
+      <aside class="rail narrow">
+        <div class="rail-item active"><div class="rail-icon icon-dash"></div>Dash</div>
+        <div class="rail-item"><div class="rail-icon icon-add"></div>New</div>
+        <div class="rail-item"><div class="rail-icon icon-techs"></div>Techs</div>
+        <div class="rail-item"><div class="rail-icon icon-money"></div>$</div>
+        <div class="rail-item"><div class="rail-icon icon-jobs"></div>Jobs</div>
+        <div class="rail-item"><div class="rail-icon icon-cust"></div>Cust.</div>
+        <div class="rail-item"><div class="rail-icon icon-rep"></div>Rpts</div>
+        <div class="rail-item"><div class="rail-icon icon-settings"></div>Set</div>
+      </aside>
+      <main class="main">
+        <h3>Dashboard</h3>
+        <p>Narrower rail = ~24px wider main content. Labels get truncated though, so optional.</p>
+      </main>
+    </div>
+  </div>
+</section>
+
+<div style="padding: 20px 0; color: var(--text-dim); font-size: 13px; max-width: 900px; line-height: 1.6;">
+  <strong style="color:white">Implementation notes:</strong><br>
+  • The band is a new component (<code>&lt;TopBrandBand /&gt;</code>) mounted above the existing <code>&lt;Sidebar /&gt;</code> in the app shell.<br>
+  • Existing <code>logo_scale_dashboard</code> setting retargets to band height (sm=56 / md=72 / lg=96) — no schema change.<br>
+  • Render mode still ships: <code>icon</code> shows logo + text; <code>lockup</code> shows logo only (hides name/tagline because the logo includes them); <code>none</code> shows text only.<br>
+  • <code>logo_scale_invoice</code> stays as-is — it only affects the invoice/estimate email templates.<br>
+  • Mobile header keeps its current full-width treatment (it already does the right thing).<br>
+  • No backend changes. Only Sidebar.tsx + App.tsx (or wherever the shell lives) get edits.<br>
+</div>
+
+</body>
+</html>
