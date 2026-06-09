@@ -1,5 +1,5 @@
-// cache-bust: 20260609-1820 wc-v250a-r3 auto-resize any logo upload (iterative width/quality ladder, PNG→JPEG fallback)
-const CACHE = "wc-v250a-r3";
+// cache-bust: 20260609-1828 wc-v250a-r4 Sidebar auto-refreshes on logo save via wc:branding-changed event
+const CACHE = "wc-v250a-r4";
 const OFFLINE = ["/", "/index.html"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE)));
