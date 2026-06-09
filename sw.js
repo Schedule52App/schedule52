@@ -1,5 +1,5 @@
-// cache-bust: 20260609-1247 wc-v246 new-appt-reorder-emails-contacts-below-zip
-const CACHE = "wc-v248";
+// cache-bust: 20260609-1647 wc-v249a settings-wired invoice/estimate templates
+const CACHE = "wc-v249a";
 const OFFLINE = ["/", "/index.html"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE)));
