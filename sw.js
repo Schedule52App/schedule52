@@ -1,5 +1,5 @@
-// cache-bust: 20260608-2358 wc-v240 outstanding-tile-token-from-sessionstorage
-const CACHE = "wc-v240";
+// cache-bust: 20260609-0014 wc-v241 past-due-conflict-resolution
+const CACHE = "wc-v241";
 const OFFLINE = ["/", "/index.html"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE)));
