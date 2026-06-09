@@ -1,5 +1,5 @@
-// cache-bust: 20260609-1710 wc-v249b char picker + split city/state/zip fields
-const CACHE = "wc-v249b";
+// cache-bust: 20260609-1735 wc-v249c invoice-order reflow + remit-differs toggle + strip hardcoded fallbacks
+const CACHE = "wc-v249c";
 const OFFLINE = ["/", "/index.html"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE)));
