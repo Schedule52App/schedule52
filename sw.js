@@ -1,5 +1,5 @@
-// cache-bust: 20260609-1828 wc-v250a-r4 Sidebar auto-refreshes on logo save via wc:branding-changed event
-const CACHE = "wc-v250a-r4";
+// cache-bust: 20260609-1843 wc-v251 brand band redesign: full-width band above rail+main, rail is pure nav
+const CACHE = "wc-v251";
 const OFFLINE = ["/", "/index.html"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE)));
