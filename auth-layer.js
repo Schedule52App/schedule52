@@ -1740,9 +1740,16 @@
     // Clear field-tech session marker as well
     try { sessionStorage.removeItem('techName'); } catch (e) {}
     clearToken();
-    // Full page reload — matches production exactly
-    // Navigate to root so reload lands on default landing screen
-    try { window.location.replace(window.location.pathname + window.location.search); } catch (e) { window.location.reload(); }
+    // wc-v244: FORCE a real navigation by appending a cache-bust query param.
+    // iOS PWA / Safari was treating location.replace(pathname + search) as a
+    // no-op when the only delta vs. the current URL was the hash, so the page
+    // never actually reloaded — the React app kept rendering the prior route
+    // (e.g. /finance), the login form was shown on top of it, and after
+    // launchApp() the user landed back on /finance. Appending `?lo=<ts>`
+    // changes the search string and guarantees a fresh page load.
+    // Also explicitly drop the hash via the URL we navigate to.
+    var target = window.location.pathname + '?lo=' + Date.now();
+    try { window.location.replace(target); } catch (e) { window.location.href = target; }
   }
 
   // Expose logout globally
