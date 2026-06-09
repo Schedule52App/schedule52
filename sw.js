@@ -1,5 +1,5 @@
-// cache-bust: 20260609-1758 wc-v250a logo upload (3-mode: icon/lockup/none) + dynamic alt text + per-tenant branding in Sidebar
-const CACHE = "wc-v250a";
+// cache-bust: 20260609-1809 wc-v250a-r2 add per-surface logo size knobs (logo_scale_dashboard + logo_scale_invoice) + object-fit:contain + larger invoice lockup envelope
+const CACHE = "wc-v250a-r2";
 const OFFLINE = ["/", "/index.html"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE)));
