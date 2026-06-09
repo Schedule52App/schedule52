@@ -1,5 +1,5 @@
-// cache-bust: 20260609-1809 wc-v250a-r2 add per-surface logo size knobs (logo_scale_dashboard + logo_scale_invoice) + object-fit:contain + larger invoice lockup envelope
-const CACHE = "wc-v250a-r2";
+// cache-bust: 20260609-1820 wc-v250a-r3 auto-resize any logo upload (iterative width/quality ladder, PNG→JPEG fallback)
+const CACHE = "wc-v250a-r3";
 const OFFLINE = ["/", "/index.html"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE)));
