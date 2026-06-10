@@ -1,8 +1,18 @@
-// cache-bust: 20260610-1940 wc-v266 debug: console.warn for useTechPills fetch state
-const CACHE = "wc-v266";
-const OFFLINE = ["/", "/index.html"];
+// cache-bust: 20260610-1945 wc-v267 fix: SW install no longer fails on missing OFFLINE URLs (blocked v262+ activation, PWA was stuck on old bundle)
+const CACHE = "wc-v267";
+// GitHub Pages serves this site under /wilbanks-scheduler-staging/ so plain
+// "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
+// fail the install if they're unreachable. Without this, install rejection
+// kept the previous SW active and stuck the PWA on an old bundle.
+const OFFLINE = ["./", "./index.html"];
 self.addEventListener("install", e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE)));
+  e.waitUntil(
+    caches.open(CACHE).then(c =>
+      Promise.all(OFFLINE.map(u => c.add(u).catch(err => {
+        try { console.warn("[sw] precache miss", u, err && err.message); } catch (_) {}
+      })))
+    )
+  );
   self.skipWaiting();
 });
 self.addEventListener("activate", e => {
