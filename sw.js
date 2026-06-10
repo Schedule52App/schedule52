@@ -1,5 +1,5 @@
-// cache-bust: 20260610-1700 wc-v257e Map InfoWindow: wider bubble + restore close X with CSS specificity win
-const CACHE = "wc-v257e";
+// cache-bust: 20260610-1715 wc-v258 Map: MarkerClusterer for dense days (CDN-loaded, graceful fallback)
+const CACHE = "wc-v258";
 const OFFLINE = ["/", "/index.html"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE)));
