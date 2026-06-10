@@ -1,5 +1,5 @@
-// cache-bust: 20260609-1910 wc-v251h footer shadow matches header (shadow-sm upward, dark:shadow-none)
-const CACHE = "wc-v251h";
+// cache-bust: 20260609-1930 wc-v251i wrap Dashboard title+stats in elevated bg-card with shadow visible in dark mode
+const CACHE = "wc-v251i";
 const OFFLINE = ["/", "/index.html"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE)));
