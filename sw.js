@@ -1,5 +1,5 @@
-// cache-bust: 20260609-1908 wc-v251g remove rail border-r + footer border-t, add upward shadow on footer
-const CACHE = "wc-v251g";
+// cache-bust: 20260609-1910 wc-v251h footer shadow matches header (shadow-sm upward, dark:shadow-none)
+const CACHE = "wc-v251h";
 const OFFLINE = ["/", "/index.html"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE)));
