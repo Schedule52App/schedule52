@@ -1,5 +1,5 @@
-// cache-bust: 20260610-2210 wc-v270e: reschedule dropdown — removed soft-warn tier entirely. ONLY hard-block slots whose start falls inside an existing appt. No amber, no "if 2h" hint. Server's full-interval overlap check on save is the safety net. Glenn's mental model: only literal start-membership counts.
-const CACHE = "wc-v270e";
+// cache-bust: 20260610-2240 wc-v270f: Send Invoice dialog now seeds Amount Paid from appt.amountPaid (Financials "Mark as Paid") when no field-tech pills exist. Fixes Larry Young case where preview showed PAID IN FULL but emailed invoice went out as unpaid.
+const CACHE = "wc-v270f";
 // GitHub Pages serves this site under /wilbanks-scheduler-staging/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
