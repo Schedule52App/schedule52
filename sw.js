@@ -1,5 +1,5 @@
-// cache-bust: 20260610-2018 wc-v269b: confirm dialog on per-tech active toggle (prevents one-tap accidental deactivation)
-const CACHE = "wc-v269b";
+// cache-bust: 20260610-2030 wc-v269c: alias lucide Map -> MapIcon to prevent minifier collapsing `new Map()` into icon constructor ("ly is not a constructor" / "Iy is not a constructor" crash)
+const CACHE = "wc-v269c";
 // GitHub Pages serves this site under /wilbanks-scheduler-staging/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
