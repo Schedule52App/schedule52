@@ -1,5 +1,5 @@
-// cache-bust: 20260610-1610 wc-v257a Map mobile: card now fixed overlay above Ask bar + larger pan-up so full card visible
-const CACHE = "wc-v257a";
+// cache-bust: 20260610-1620 wc-v257b Map: 12h time format (9:00 AM) + opaque card bg (no bleed-through)
+const CACHE = "wc-v257b";
 const OFFLINE = ["/", "/index.html"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE)));
