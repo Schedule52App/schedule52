@@ -1,5 +1,5 @@
-// cache-bust: 20260610-1830 wc-v261 Phase B: tech avatar UI (upload, crop modal, preview, delete, SMS consent toggle) + TechAvatar component
-const CACHE = "wc-v261";
+// cache-bust: 20260610-1900 wc-v262 Phase C: TechAvatar rolled into sidebar (mobile Filter by Tech + desktop Techs flyout)
+const CACHE = "wc-v262";
 const OFFLINE = ["/", "/index.html"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE)));
