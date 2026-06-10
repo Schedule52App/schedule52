@@ -1,5 +1,5 @@
-// cache-bust: 20260609-1857 wc-v251d compact lightbulb + textarea + Ask/clear on desktop (~12px more)
-const CACHE = "wc-v251d";
+// cache-bust: 20260609-1902 wc-v251e lightbulb + textarea + Ask + clear all 28px on desktop (matching heights)
+const CACHE = "wc-v251e";
 const OFFLINE = ["/", "/index.html"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(OFFLINE)));
