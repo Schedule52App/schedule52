@@ -1,5 +1,5 @@
-// cache-bust: 20260611-1011 wc-v270t: fix Financials "Admin audit" panel returning HTTP 404 on Show/Refresh. The OneClickPaidAuditPanel was the only Finance call using a raw fetch() with a bare relative "/api/admin/one-click-paid-audit" path; on GitHub Pages that resolved to the Pages host (which has no /api) and 404'd. Now routes through apiRequest() like every other Finance call, so it hits API_BASE (Railway) with the shared auth token. New JS index-C9-iz1Gp.js (CSS index-D4OTVTTE.css unchanged).
-const CACHE = "wc-v270t";
+// cache-bust: 20260611-1104 wc-v270u: fix recurring-appointment reschedule ("This and all future events") failing with "Reschedule failed". The Dashboard Confirm-Reschedule handler PATCHed /api/appointments/:id/reschedule-future but never sent the required fromDate field, so the server returned 400 "fromDate required" -> generic failure toast. Now sends fromDate=appt.scheduledDate (same as AppointmentDetail's update-future call). Also: failure toast now surfaces the server's actual error message instead of a blind "Failed". New JS index-DKQuz8yc.js (CSS index-D4OTVTTE.css unchanged).
+const CACHE = "wc-v270u";
 // GitHub Pages serves this site under /wilbanks-scheduler-staging/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
