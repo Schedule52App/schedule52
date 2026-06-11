@@ -1,5 +1,5 @@
-// cache-bust: 20260610-2010 wc-v270j: Settings > Technicians list cards now use <TechAvatar> (photo when set, initials fallback) instead of a hand-rolled initials chip — so uploaded tech photos show in the Settings list too, matching the Techs dropdown. (wc-v270i fixed the avatar bucket URL.)
-const CACHE = "wc-v270j";
+// cache-bust: 20260610-2012 wc-v270k: Dashboard "Tech view" (horizontal lane grid) lane headers now render <TechAvatar> (uploaded photo when set, initials-on-color fallback) instead of always showing initials — so tech photos now show in Tech view too, matching the Techs dropdown and Settings list. Unassigned lane keeps the dashed "?" chip.
+const CACHE = "wc-v270k";
 // GitHub Pages serves this site under /wilbanks-scheduler-staging/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
