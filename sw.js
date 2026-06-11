@@ -1,5 +1,5 @@
-// cache-bust: 20260610-2240 wc-v270f: Send Invoice dialog now seeds Amount Paid from appt.amountPaid (Financials "Mark as Paid") when no field-tech pills exist. Fixes Larry Young case where preview showed PAID IN FULL but emailed invoice went out as unpaid.
-const CACHE = "wc-v270f";
+// cache-bust: 20260610-2002 wc-v270i: tech avatar public URL now points at the wilbanks-assets-staging R2 bucket (Option A single-bucket) so uploaded avatars actually render in TechAvatar chips. Previously hardcoded the prod wilbanks-assets bucket URL where the images don't exist -> chips fell back to initials.
+const CACHE = "wc-v270i";
 // GitHub Pages serves this site under /wilbanks-scheduler-staging/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
