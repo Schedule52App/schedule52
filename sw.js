@@ -1,5 +1,5 @@
-// cache-bust: 20260611-0958 wc-v270s: hardening follow-up to the wc-v270r crash fix. (1) SW fetch handler now clones the response SYNCHRONOUSLY before the async caches.open(), fixing the repeating "Response body is already used" console errors. (2) PreferencesProvider set() now refuses to persist null/undefined, so a null pref can never round-trip through the server (JSON "null") and crash a caller again — closes the write side of the wc-v270r data path (read side already fixed). New JS (rebuilt; CSS index-D4OTVTTE.css unchanged).
-const CACHE = "wc-v270s";
+// cache-bust: 20260611-1011 wc-v270t: fix Financials "Admin audit" panel returning HTTP 404 on Show/Refresh. The OneClickPaidAuditPanel was the only Finance call using a raw fetch() with a bare relative "/api/admin/one-click-paid-audit" path; on GitHub Pages that resolved to the Pages host (which has no /api) and 404'd. Now routes through apiRequest() like every other Finance call, so it hits API_BASE (Railway) with the shared auth token. New JS index-C9-iz1Gp.js (CSS index-D4OTVTTE.css unchanged).
+const CACHE = "wc-v270t";
 // GitHub Pages serves this site under /wilbanks-scheduler-staging/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
