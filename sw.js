@@ -1,5 +1,5 @@
-// cache-bust: 20260611-1405 wc-v270x: Day-view chips now show the Dispatcher Notes (appt.notes). Always rendered when a note exists; the note line fills the remaining chip height (flex-1, overflow-hidden) so a tall appointment shows the full note while a short chip truncates cleanly without breaking layout. New JS index-Dh3LjPJl.js, new CSS index-BHjRZB38.css (added whitespace-pre-line/break-words utilities). (Prior wc-v270w: explicit bearer token on AppointmentDetail appt+technicians fetches — robustness only, not the end-time fix; that was wc-v270v + a device cache clear.)
-const CACHE = "wc-v270x";
+// cache-bust: 20260611-1410 wc-v270y: polish the Day-view dispatcher-notes display — add a small uppercase "Dispatcher Notes" label above the note text so the chip reads professionally instead of raw floating text. Same always-show + fill-remaining-height + clean-truncate behavior. New JS index-BiLdmsJf.js, new CSS index-DIT1agOa.css. (wc-v270x first added notes to chips; wc-v270w bearer-token robustness; end-time fix was wc-v270v + device cache clear.)
+const CACHE = "wc-v270y";
 // GitHub Pages serves this site under /wilbanks-scheduler-staging/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
