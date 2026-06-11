@@ -1,5 +1,5 @@
-// cache-bust: 20260610-2002 wc-v270i: tech avatar public URL now points at the wilbanks-assets-staging R2 bucket (Option A single-bucket) so uploaded avatars actually render in TechAvatar chips. Previously hardcoded the prod wilbanks-assets bucket URL where the images don't exist -> chips fell back to initials.
-const CACHE = "wc-v270i";
+// cache-bust: 20260610-2010 wc-v270j: Settings > Technicians list cards now use <TechAvatar> (photo when set, initials fallback) instead of a hand-rolled initials chip — so uploaded tech photos show in the Settings list too, matching the Techs dropdown. (wc-v270i fixed the avatar bucket URL.)
+const CACHE = "wc-v270j";
 // GitHub Pages serves this site under /wilbanks-scheduler-staging/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
