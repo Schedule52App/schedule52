@@ -1,5 +1,5 @@
-// cache-bust: 20260612-1756 wc-v273: Status chip consistency fix. The appointment detail page (dashboard) hardcoded its own status colors and showed "In Progress" as yellow/amber, inconsistent with the calendar and the canonical theme where in-progress = purple (#8b5cf6). Changed in_progress to purple in AppointmentDetail statusConfig so the detail pill matches the calendar. New JS index-D7tOOsBk.js, new CSS index-Fa0OIsg0.css.
-const CACHE = "wc-v273";
+// cache-bust: 20260612-1800 wc-v274: Match dashboard appointment-detail status pills to the calendar legend (statusHex source of truth). on_the_way -> amber, in_progress -> purple. New JS index-B6z85kIM.js, new CSS index-BFQRDnJN.css.
+const CACHE = "wc-v274";
 // GitHub Pages serves this site under /wilbanks-scheduler-staging/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
