@@ -1,5 +1,5 @@
-// cache-bust: 20260612-1815 wc-v275: Dashboard appointment-detail now polls (15s) and refetches on focus so status changes made in the field app (a separate client) appear without a manual reload. New JS index-BSO_5QYe.js.
-const CACHE = "wc-v275";
+// cache-bust: 20260612-1830 wc-v276: AppointmentDetail pill/date/tech now overlay the fresh calendar-list copy so the status pill can never lag behind the month-calendar chip. New JS index-BqBdUlwk.js.
+const CACHE = "wc-v276";
 // GitHub Pages serves this site under /wilbanks-scheduler-staging/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
