@@ -1,5 +1,5 @@
-// cache-bust: 20260612-1800 wc-v274: Match dashboard appointment-detail status pills to the calendar legend (statusHex source of truth). on_the_way -> amber, in_progress -> purple. New JS index-B6z85kIM.js, new CSS index-BFQRDnJN.css.
-const CACHE = "wc-v274";
+// cache-bust: 20260612-1815 wc-v275: Dashboard appointment-detail now polls (15s) and refetches on focus so status changes made in the field app (a separate client) appear without a manual reload. New JS index-BSO_5QYe.js.
+const CACHE = "wc-v275";
 // GitHub Pages serves this site under /wilbanks-scheduler-staging/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
