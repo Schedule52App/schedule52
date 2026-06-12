@@ -1,5 +1,5 @@
-// cache-bust: 20260611-1548 wc-v272: Settings IA Phase 2. Replaced the horizontal tab strip + Admin Tools hover-flyout with a persistent vertical left-rail sub-nav inside Settings (Option B, chrome-only — body content groupings unchanged). Every destination is one click; no hover, no clickable-parent ambiguity. Top group: Company / Dashboard / Billing. "Admin" section: Connections / Customer Messaging / Users & Roles / Industries & Trades / Audit Log / Customer Sync / Deleted Jobs. About at the bottom. On phone the rail collapses into a sticky "Settings section" dropdown. New JS index-CmFRTrA_.js, new CSS index-CO-CW-0o.css. (wc-v271 was Phase 1 IA cleanup.)
-const CACHE = "wc-v272";
+// cache-bust: 20260612-1756 wc-v273: Status chip consistency fix. The appointment detail page (dashboard) hardcoded its own status colors and showed "In Progress" as yellow/amber, inconsistent with the calendar and the canonical theme where in-progress = purple (#8b5cf6). Changed in_progress to purple in AppointmentDetail statusConfig so the detail pill matches the calendar. New JS index-D7tOOsBk.js, new CSS index-Fa0OIsg0.css.
+const CACHE = "wc-v273";
 // GitHub Pages serves this site under /wilbanks-scheduler-staging/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
