@@ -1,5 +1,5 @@
-// cache-bust: 20260612-2251 wc-v280: card View now shows ONLY the read-only Estimate Preview - editor body suppressed in autoPreview mode; closing the preview (X/Cancel) returns to the card. New JS index-XM_bDwIT.js.
-const CACHE = "wc-v280";
+// cache-bust: 20260612-2256 wc-v281: card Edit pencil now opens the builder with the estimate loaded straight into the editable line items (autoEdit); removed redundant Edit/trash/estimate-Preview from the Saved Estimates row. New JS index-BC4ldcwD.js, CSS index-Dwx5l_dI.css.
+const CACHE = "wc-v281";
 // GitHub Pages serves this site under /wilbanks-scheduler-staging/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
