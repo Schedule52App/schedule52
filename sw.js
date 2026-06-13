@@ -1,5 +1,5 @@
-// cache-bust: 20260612-2218 wc-v277: Estimate/Invoice card redesign (empty-state per approved mockup) replaces the old single Create/View button. Behavior unchanged - Create Estimate / View both open the existing EstimateBuilder. New JS index-CG0n0FUn.js.
-const CACHE = "wc-v277";
+// cache-bust: 20260612-2239 wc-v278: Estimate/Invoice card now matches approved Scenario B mockup - Estimate row gets Edit pencil + View; Invoice row (Not created yet + Convert to Invoice) wired to existing convert-to-invoice endpoint. Estimate Preview modal enlarged (maxWidth 1000px / 92vh). Send Estimate now returns to the card instead of the editor. New JS index-dUcJ9Ii7.js.
+const CACHE = "wc-v278";
 // GitHub Pages serves this site under /wilbanks-scheduler-staging/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
