@@ -1,5 +1,5 @@
-// cache-bust: 20260613-1755 wc-v291: SHOW-COMPLETED TOGGLE. Completed jobs are now hidden from the calendar by default to de-clutter it (still tracked in Reports). A "Completed" toggle in the calendar header (next to View) brings them back; the filter is applied at the calendarAppts source so it covers all views (month/week/day/tech). State persists via sessionStorage wc_cal_show_completed. New JS index-U8kvmhPB.js, CSS index-DVFzr4l9.css.
-const CACHE = "wc-v291";
+// cache-bust: 20260613-1820 wc-v292: VOID & RE-BILL admin action. AppointmentDetail now shows an admin-only "Void & re-bill" card once an invoice exists (qbInvoiceNum set). It POSTs to /api/appointments/:id/void-invoice, which voids the invoice in QuickBooks (operation=void) and unlocks the job back into Ready-to-Invoice. Behind a confirm dialog. Server blocks paid invoices (409) and leaves the job locked on QB failure (502). New JS index-BYeSUEHy.js, CSS index-DVFzr4l9.css.
+const CACHE = "wc-v292";
 // GitHub Pages serves this site under /wilbanks-scheduler-staging/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
