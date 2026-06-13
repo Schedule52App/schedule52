@@ -1,5 +1,5 @@
-// cache-bust: 20260613-1820 wc-v292: VOID & RE-BILL admin action. AppointmentDetail now shows an admin-only "Void & re-bill" card once an invoice exists (qbInvoiceNum set). It POSTs to /api/appointments/:id/void-invoice, which voids the invoice in QuickBooks (operation=void) and unlocks the job back into Ready-to-Invoice. Behind a confirm dialog. Server blocks paid invoices (409) and leaves the job locked on QB failure (502). New JS index-BYeSUEHy.js, CSS index-DVFzr4l9.css.
-const CACHE = "wc-v292";
+// cache-bust: 20260613-1834 wc-v293: MAP DUPLICATE FIX. /api/map/appointments now fetches customer_type via a correlated subquery instead of LEFT JOIN customers (customer_name has no unique constraint, so the join fanned out and listed the same appointment twice on the Map View). MapView.tsx also dedupes by appt id client-side (belt-and-suspenders). New JS index-gBU2kxXy.js, CSS index-DVFzr4l9.css.
+const CACHE = "wc-v293";
 // GitHub Pages serves this site under /wilbanks-scheduler-staging/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
