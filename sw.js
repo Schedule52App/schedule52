@@ -1,5 +1,5 @@
-// cache-bust: 20260613-0706 wc-v286: REAL fix for preview footer off-screen on iPhone — portal the preview modal to document.body + z-[10000] (proven RtiActions pattern). The in-shell modal was being clipped by the App shell stacking context and the persistent AskAiBar painted over the footer. New JS index-CoyseCwE.js, CSS index-DtCwdFQF.css.
-const CACHE = "wc-v286";
+// cache-bust: 20260613-0955 wc-v287: card Convert-to-Invoice is now service-type aware. HVAC routes to the SAME Gmail send flow (HvacSendInvoiceFlow) as the Ready-to-Invoice tab — never the QB convert endpoint — so both doorways create ONE invoice (server reuses qb_invoice_num). HVAC button label: Send Invoice / Resend Invoice; subtext: Invoice sent / Not created yet. Plumbing unchanged (QB convert). New JS index-AaGUYNEB.js, CSS index-DtCwdFQF.css.
+const CACHE = "wc-v287";
 // GitHub Pages serves this site under /wilbanks-scheduler-staging/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
