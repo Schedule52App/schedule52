@@ -1,5 +1,5 @@
-// cache-bust: 20260612-2239 wc-v278: Estimate/Invoice card now matches approved Scenario B mockup - Estimate row gets Edit pencil + View; Invoice row (Not created yet + Convert to Invoice) wired to existing convert-to-invoice endpoint. Estimate Preview modal enlarged (maxWidth 1000px / 92vh). Send Estimate now returns to the card instead of the editor. New JS index-dUcJ9Ii7.js.
-const CACHE = "wc-v278";
+// cache-bust: 20260612-2247 wc-v279: card View button now jumps straight to the read-only Estimate Preview (Send to Customer) via autoPreview; Edit pencil opens the editor. New JS index-xOrk_dkP.js.
+const CACHE = "wc-v279";
 // GitHub Pages serves this site under /wilbanks-scheduler-staging/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
