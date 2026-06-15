@@ -1,6 +1,6 @@
-// cache-bust: 20260613-1846 wc-v293b: CALENDAR HOVER + selected-date styling. Days now visibly stand out on hover (accent-tinted fill + ring), and the SELECTED day uses the bold orange accent fill+ring while TODAY is a subtle outline ring only (was backwards/faint before). Shared shadcn calendar.tsx, so applies app-wide. New JS index-CoRKHDaa.js, CSS index-hvC_Rh4Z.css.
-const CACHE = "wc-v293b";
-// GitHub Pages serves this site under /wilbanks-scheduler-staging/ so plain
+// cache-bust: 20260615-1640 s52-v1: Schedule52 standup. First deploy under the Schedule52App org against the multi-tenant Postgres backend (schedule52-server-production). App-identity rebrand from Wilbanks; B29a server retarget. New bundle copied from schedule52-src build.
+const CACHE = "s52-v1";
+// GitHub Pages serves this site under /schedule52/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
 // kept the previous SW active and stuck the PWA on an old bundle.

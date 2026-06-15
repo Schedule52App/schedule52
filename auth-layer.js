@@ -1,13 +1,20 @@
 /**
- * Wilbanks Company — Auth Layer
- * Injected into both apps via index.html before React loads.
+ * Schedule52 — Auth Layer
+ * Injected into the app via index.html before React loads.
  * - JWT token stored in memory only (window.__WC_TOKEN)
  * - Username saved to localStorage for "remember me"
  * - Face ID / WebAuthn: optional after first login
  * - Monkey-patches fetch to inject Authorization headers on Railway calls
  */
 (function () {
-  const API = "https://wilbanks-server-production.up.railway.app";
+  // B29a: Schedule52 multi-tenant backend (NOT the Wilbanks single-tenant server).
+  // SINGLE SOURCE OF TRUTH for the server origin in this static auth layer; the
+  // fetch interceptor below injects the JWT for calls to API_HOST (derived from
+  // this), so there is no second host literal to drift. Must match API_BASE in
+  // schedule52-src/src/lib/api.ts. The Schedule52 server CORS allowlist
+  // (ALLOWED_ORIGINS env) must include this frontend's GitHub Pages origin.
+  const API = "https://schedule52-server-production.up.railway.app";
+  const API_HOST = API.replace(/^https?:\/\//, ""); // host[:port] for the fetch-interceptor match
   const TOKEN_KEY = "wc_auth_token"; // sessionStorage — clears when tab closes... we use memory
   const USERNAME_KEY = "wc_saved_username";
   const WEBAUTHN_PROMPT_KEY = "wc_webauthn_prompted"; // so we only ask once
@@ -82,7 +89,7 @@
   const _origFetch = window.fetch.bind(window);
   window.fetch = function (input, init = {}) {
     const url = typeof input === "string" ? input : (input?.url || "");
-    if (url.includes("wilbanks-server-production.up.railway.app") && _token) {
+    if (url.includes(API_HOST) && _token) {
       init = {
         ...init,
         headers: {
@@ -420,10 +427,10 @@
 
     const overlay = showOverlay(`
       <div class="wc-logo">
-        <img src="./assets/logo-DmC-dsba.jpg" alt="Wilbanks" />
+        <img src="./assets/logo-DmC-dsba.jpg" alt="Schedule52" />
         <div class="wc-logo-text">
-          <h1>Wilbanks Company</h1>
-          <p>Cooling &bull; Heating &bull; Plumbing</p>
+          <h1>Schedule52</h1>
+          <p>Field Services Scheduling</p>
         </div>
       </div>
       <h2 class="wc-title">Sign In</h2>
@@ -535,10 +542,10 @@
   function renderChangePassword() {
     const overlay = showOverlay(`
       <div class="wc-logo">
-        <img src="./assets/logo-DmC-dsba.jpg" alt="Wilbanks" />
+        <img src="./assets/logo-DmC-dsba.jpg" alt="Schedule52" />
         <div class="wc-logo-text">
-          <h1>Wilbanks Company</h1>
-          <p>Cooling &bull; Heating &bull; Plumbing</p>
+          <h1>Schedule52</h1>
+          <p>Field Services Scheduling</p>
         </div>
       </div>
       <h2 class="wc-title">Set Your Password</h2>
@@ -1115,7 +1122,7 @@
           <div style="display:flex;align-items:center;gap:10px">
             <div style="flex:1">
               <label style="display:block;font-size:12px;color:#71717a;margin-bottom:5px">TEMP PASSWORD</label>
-              <input id="wc-new-password" type="text" value="Wilbanks1!" style="width:100%;box-sizing:border-box;background:#09090b;border:1px solid #3f3f46;border-radius:8px;padding:9px 12px;font-size:14px;color:#fafafa;outline:none" />
+              <input id="wc-new-password" type="text" value="Schedule52!" style="width:100%;box-sizing:border-box;background:#09090b;border:1px solid #3f3f46;border-radius:8px;padding:9px 12px;font-size:14px;color:#fafafa;outline:none" />
             </div>
             <button id="wc-add-user-btn" style="background:#3b82f6;border:none;color:#fff;border-radius:8px;padding:9px 20px;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;margin-top:18px">Add User</button>
           </div>
@@ -1164,7 +1171,7 @@
           okEl.style.display = 'block';
           document.getElementById('wc-new-username').value = '';
           document.getElementById('wc-new-displayname').value = '';
-          document.getElementById('wc-new-password').value = 'Wilbanks1!';
+          document.getElementById('wc-new-password').value = 'Schedule52!';
           loadUserList();
         }
       } catch { errEl.textContent = 'Connection error.'; errEl.style.display = 'block'; }
@@ -1197,7 +1204,7 @@
       `).join('');
 
       window.__wcResetPw = async (id, username) => {
-        if (!confirm(`Reset password for "${username}" to Wilbanks1!?`)) return;
+        if (!confirm(`Reset password for "${username}" to Schedule52!?`)) return;
         const res = await fetch(API + '/api/auth/users/' + id + '/reset-password', {
           method: 'POST', headers: { Authorization: 'Bearer ' + _token },
         });
@@ -1500,7 +1507,7 @@
       numRow.style.cssText = 'display:flex;align-items:center;gap:8px;';
       numRow.innerHTML = '<span style="color:hsl(var(--muted-foreground))">Invoice #:</span>' +
         '<span style="color:hsl(var(--foreground));font-weight:500">' + appt.qbInvoiceNum + '</span>' +
-        (appt.qbInvoiceId ? '<a href="https://wilbanks-server-production.up.railway.app/api/qb-invoice-pdf/' + id + '" target="_blank" style="color:hsl(var(--primary));font-size:12px;text-decoration:none;margin-left:6px;">View Invoice</a>' : '');
+        (appt.qbInvoiceId ? '<a href="' + API + '/api/qb-invoice-pdf/' + id + '" target="_blank" style="color:hsl(var(--primary));font-size:12px;text-decoration:none;margin-left:6px;">View Invoice</a>' : '');
       info.appendChild(numRow);
     }
 
@@ -1590,7 +1597,7 @@
 
 
     function doLogout() {
-      if (confirm('Sign out of Wilbanks Company?')) logout();
+      if (confirm('Sign out of Schedule52?')) logout();
     }
 
     // Strategy 1a: Dashboard desktop sidebar — inject into the dedicated
@@ -2180,13 +2187,8 @@
           <div style="font-size:14px;font-weight:600;color:hsl(var(--foreground));margin-bottom:12px">How to Refresh</div>
           <ol style="font-size:13px;color:hsl(var(--muted-foreground));margin:0;padding-left:20px;line-height:1.8">
             <li style="margin-bottom:6px">Click <strong style="color:hsl(var(--foreground))">Open QuickBooks Login</strong> below — a new tab will open.</li>
-            <li style="margin-bottom:6px">When prompted, enter:<br>
-              <span style="display:inline-block;margin-top:4px;padding:6px 10px;background:hsl(var(--muted));border-radius:6px;font-family:monospace;font-size:12px;color:hsl(var(--foreground))">
-                Username: <strong>wilbanks</strong> &nbsp;|&nbsp; Password: <strong>WilbanksQB2026!</strong>
-              </span><br>
-              <span style="font-size:12px">Then click <strong style="color:hsl(var(--foreground))">Connect</strong>.</span>
-            </li>
-            <li style="margin-bottom:6px">A Chrome browser window will appear. Log into QuickBooks using the Wilbanks Company QB credentials.</li>
+            <li style="margin-bottom:6px">When prompted, sign in with your company's QuickBooks Online credentials, then click <strong style="color:hsl(var(--foreground))">Connect</strong>.</li>
+            <li style="margin-bottom:6px">A Chrome browser window will appear. Log into QuickBooks using your company's QB credentials.</li>
             <li style="margin-bottom:6px">If QuickBooks asks for a verification code, check the business phone for a text and enter the code.</li>
             <li style="margin-bottom:6px">Wait until you can see the <strong style="color:hsl(var(--foreground))">QuickBooks home page</strong> — do not close the tab early.</li>
             <li style="margin-bottom:6px">Switch back to this tab and click <strong style="color:hsl(var(--foreground))">Check Session Status</strong> below.</li>

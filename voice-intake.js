@@ -1,4 +1,4 @@
-/* Wilbanks Voice Intake — phase 1 (staging)
+/* Schedule52 Voice Intake — phase 1 (staging)
  * Gated by localStorage.wc_voice === "1". Adds a mic button to the New Appointment page.
  * RECORDS audio via MediaRecorder, sends to /api/voice/transcribe (Groq Whisper),
  * then sends transcript to /api/voice/parse-appointment, and pre-fills the form.
@@ -27,7 +27,8 @@
   } catch (e) { return; }
 
   // ── Config ──────────────────────────────────────────────────────────────────
-  var API_BASE = "https://wilbanks-server-staging.up.railway.app";
+  // B29a retarget: Schedule52 multi-tenant backend (was the Wilbanks staging server).
+  var API_BASE = "https://schedule52-server-production.up.railway.app";
   var TRANSCRIBE_ENDPOINT = API_BASE + "/api/voice/transcribe";
   var PARSE_ENDPOINT = API_BASE + "/api/voice/parse-appointment";
   var TOKEN_KEYS = ["wc_auth_token", "authToken", "wc_token"];
