@@ -1,5 +1,5 @@
-// cache-bust: 20260615-1640 s52-v1: Schedule52 standup. First deploy under the Schedule52App org against the multi-tenant Postgres backend (schedule52-server-production). App-identity rebrand from Wilbanks; B29a server retarget. New bundle copied from schedule52-src build.
-const CACHE = "s52-v1";
+// cache-bust: 20260615-1730 s52-v2: Phase B frontend de-tenant. Company name/address/phone/email/logo/map-center/temp-password now sourced from tenant settings (/api/settings) instead of hardcoded Wilbanks literals. New bundle index-BXXExOWQ.js from schedule52-src build.
+const CACHE = "s52-v2";
 // GitHub Pages serves this site under /schedule52/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
