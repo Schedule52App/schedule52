@@ -1,5 +1,5 @@
-// cache-bust: 20260616-1215 s52-v5: Fix platform-admin Manage dialog so it scrolls within the viewport (max-h-[90vh] overflow-y-auto) - the close X and footer buttons were being pushed off-screen on shorter windows. New bundle index-CECwpGKz.js from schedule52-src build.
-const CACHE = "s52-v5";
+// cache-bust: 20260616-2030 s52-v6: Port from Wilbanks app — QB invoice ready-gate on auto-open. RtiActions only auto-opens the QuickBooks tab when the server confirms the invoice is indexed (qbReadyConfirmed); otherwise it shows a one-click "Open in QuickBooks" toast action instead of risking a blank QB new-invoice form. Includes prior platform-admin Manage dialog scroll fix. New bundle index-vPQF8jKt.js from schedule52-src build.
+const CACHE = "s52-v6";
 // GitHub Pages serves this site under /schedule52/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
