@@ -1,5 +1,5 @@
-// cache-bust: 20260616-1140 s52-v4: Phase E platform-admin console. New /admin route + Platform Admin nav link (gated to PLATFORM_ADMIN_EMAILS operators only). Cross-tenant tenant table with Elite-for-Starter override (comp), set plan/status/cap, extend trial. New bundle index-97b-f0Lb.js from schedule52-src build.
-const CACHE = "s52-v4";
+// cache-bust: 20260616-1215 s52-v5: Fix platform-admin Manage dialog so it scrolls within the viewport (max-h-[90vh] overflow-y-auto) - the close X and footer buttons were being pushed off-screen on shorter windows. New bundle index-CECwpGKz.js from schedule52-src build.
+const CACHE = "s52-v5";
 // GitHub Pages serves this site under /schedule52/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
