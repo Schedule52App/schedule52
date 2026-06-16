@@ -1,5 +1,5 @@
-// cache-bust: 20260615-1730 s52-v2: Phase B frontend de-tenant. Company name/address/phone/email/logo/map-center/temp-password now sourced from tenant settings (/api/settings) instead of hardcoded Wilbanks literals. New bundle index-BXXExOWQ.js from schedule52-src build.
-const CACHE = "s52-v2";
+// cache-bust: 20260616-1015 s52-v3: Phase D billing UI. New customer-facing Billing & Plans page (3 plans, monthly/annual toggle, Paddle.js checkout), /billing route, Sidebar Billing nav (admin/owner only), actionable upgrade prompts on user-cap hit and feature-off Map View. New bundle index-CKCn9qFn.js from schedule52-src build.
+const CACHE = "s52-v3";
 // GitHub Pages serves this site under /schedule52/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
