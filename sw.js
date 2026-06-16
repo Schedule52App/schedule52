@@ -1,5 +1,5 @@
-// cache-bust: 20260616-1015 s52-v3: Phase D billing UI. New customer-facing Billing & Plans page (3 plans, monthly/annual toggle, Paddle.js checkout), /billing route, Sidebar Billing nav (admin/owner only), actionable upgrade prompts on user-cap hit and feature-off Map View. New bundle index-CKCn9qFn.js from schedule52-src build.
-const CACHE = "s52-v3";
+// cache-bust: 20260616-1140 s52-v4: Phase E platform-admin console. New /admin route + Platform Admin nav link (gated to PLATFORM_ADMIN_EMAILS operators only). Cross-tenant tenant table with Elite-for-Starter override (comp), set plan/status/cap, extend trial. New bundle index-97b-f0Lb.js from schedule52-src build.
+const CACHE = "s52-v4";
 // GitHub Pages serves this site under /schedule52/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
