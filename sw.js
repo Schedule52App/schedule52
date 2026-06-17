@@ -11,7 +11,12 @@
 // (fieldtech / wilbanks-fieldtech). All six inline gates route through it. This
 // makes the hash-routed /field surface detectable so the field tech app works
 // multi-tenant; data isolation remains JWT + Postgres RLS (verified disjoint).
-const CACHE = "s52-v15";
+// cache-bust: 20260617 s52-v16: field-tech JobDetail Apple Maps deep link
+// restored to driving directions (daddr + dirflg=d) instead of the regressed
+// ?q= search-pin. New bundle index-D8JIStv6.js. Field source now matches the
+// canonical dashboard-source repo; only intentional deltas are neutral Login
+// branding and tenant-aware SMS company name (both already in place).
+const CACHE = "s52-v16";
 // GitHub Pages serves this site under /schedule52/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
