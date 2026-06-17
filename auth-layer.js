@@ -29,8 +29,13 @@
   let _token = null;
 
   function isFieldApp() {
-    return window.location.pathname.includes('fieldtech') ||
-           window.location.href.includes('wilbanks-fieldtech');
+    // Schedule52 is hash-routed (wouter useHashLocation); App.tsx gates the field
+    // surface on location.startsWith('/field'). Real URLs are
+    // app.schedule52.com/#/field[...], so the route lives in window.location.hash
+    // — NOT pathname/href. Tenant-neutral: this only decides which UI renders;
+    // JWT + Postgres RLS are the data-isolation boundary, not this gate.
+    var h = (window.location.hash || '').replace(/^#/, '');
+    return h === '/field' || h.indexOf('/field/') === 0 || h.indexOf('/field') === 0;
   }
 
   // Public, no-login routes (customer-facing). These must render WITHOUT a
@@ -671,8 +676,7 @@
     publishUserRole(user);
 
     // Determine which app we're on
-    const isDashboard = !window.location.pathname.includes('fieldtech') &&
-                        !window.location.href.includes('wilbanks-fieldtech');
+    const isDashboard = !isFieldApp();
     // 'tech' can only access field tech app
     if (user.role === 'tech' && isDashboard) {
       clearToken();
@@ -834,8 +838,7 @@
   let _inactivityInterval = null;
 
   function getInactivityLimit() {
-    const isDashboard = !window.location.pathname.includes('fieldtech') &&
-                        !window.location.href.includes('wilbanks-fieldtech');
+    const isDashboard = !isFieldApp();
     return isDashboard ? 30 * 60 * 1000 : 24 * 60 * 60 * 1000; // 30min or 24hr in ms
   }
 
@@ -873,9 +876,7 @@
 
   function syncFieldTechName(user) {
     if (!user) return;
-    const isDashboard = !window.location.pathname.includes('fieldtech') &&
-                        !window.location.href.includes('wilbanks-fieldtech') &&
-                        !window.location.href.includes('fieldtech');
+    const isDashboard = !isFieldApp();
     if (isDashboard) return; // only needed on field tech app
     try {
       const name = user.displayName || user.username || '';
@@ -1896,8 +1897,7 @@
           }, 1500);
           // Block field techs from accessing the dashboard URL
           if (user.role === 'tech') {
-            const isDashboard = !window.location.pathname.includes('fieldtech') &&
-                                !window.location.href.includes('wilbanks-fieldtech');
+            const isDashboard = !isFieldApp();
             if (isDashboard) {
               if (root) root.style.display = 'none';
               renderLogin('Field Tech accounts cannot access the dashboard.');
@@ -1907,8 +1907,7 @@
           }
           // Block dispatcher-only role from field tech app (admin can access both)
           if (user.role === 'dispatcher') {
-            const isDashboard = !window.location.pathname.includes('fieldtech') &&
-                                !window.location.href.includes('wilbanks-fieldtech');
+            const isDashboard = !isFieldApp();
             if (!isDashboard) {
               if (root) root.style.display = 'none';
               renderLogin('Dashboard accounts cannot access the Field Tech app.');
@@ -2153,7 +2152,7 @@
 
   function renderQBLoginPage() {
     // Only render on dashboard, not field app
-    if (window.location.href.includes('fieldtech')) return;
+    if (isFieldApp()) return;
 
     // Make React container invisible and show our page
     const main = document.querySelector('main');
