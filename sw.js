@@ -6,7 +6,7 @@
 // now tied to the bundle version and MUST be bumped on every deploy that ships
 // a new index-*.js so the activate handler below purges old caches and clients
 // pick up the fresh bundle automatically (no manual cache-clearing needed).
-const CACHE = "s52-v11";
+const CACHE = "s52-v12";
 // GitHub Pages serves this site under /schedule52/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection

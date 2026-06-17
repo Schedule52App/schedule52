@@ -33,6 +33,18 @@
            window.location.href.includes('wilbanks-fieldtech');
   }
 
+  // Public, no-login routes (customer-facing). These must render WITHOUT a
+  // token: the auth layer must not show the login screen, must not hide #root,
+  // and must not clear the URL hash (the token lives in the hash). Currently
+  // only the tokenized quote-acceptance page: app origin + #/quote/<token>.
+  // Hash-routed (wouter useHashLocation), so we match on location.hash.
+  function isPublicRoute() {
+    try {
+      var h = window.location.hash || '';
+      return /^#\/quote\//.test(h);
+    } catch (e) { return false; }
+  }
+
   function saveToken(token) {
     _token = token;
     try {
@@ -1816,6 +1828,18 @@
 
   // ── Bootstrap ─────────────────────────────────────────────────────────────
   async function bootstrap() {
+    // Public no-login routes (e.g. tokenized quote acceptance): render the React
+    // app immediately with NO auth gate. Do NOT hide #root, do NOT renderLogin,
+    // do NOT touch the hash (the access token is in the hash). The page makes its
+    // own unauthenticated fetches to public /api/quote/:token endpoints. We also
+    // skip the fetch interceptor's Authorization injection naturally because no
+    // token is loaded. Mirror of the isFieldApp() exemption pattern.
+    if (isPublicRoute()) {
+      const rootEl = document.getElementById("root");
+      if (rootEl) rootEl.style.display = "";
+      return;
+    }
+
     // Hide root until auth is confirmed
     const root = document.getElementById("root");
     if (root) root.style.display = "none";
@@ -1940,6 +1964,8 @@
   // _token is still set in memory but localStorage is cleared.
   // Force a full reload so bootstrap runs fresh and shows the login screen.
   window.addEventListener('pageshow', function(e) {
+    // Never force-reload-to-login on a public no-login route.
+    if (isPublicRoute()) return;
     if (e.persisted) {
       // Page was restored from bfcache — check if token is gone from storage
       const stored = (function() {
