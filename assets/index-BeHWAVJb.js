@@ -303,11 +303,11 @@ This cannot be undone.`)){v(!0);try{const W=localStorage.getItem("wc_auth_token"
           <path d="M28.5 8.2 L31 10.5 L35.5 5.8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`:K==="in_progress"?R=`<circle cx="32" cy="8" r="7" fill="#8b5cf6" stroke="white" stroke-width="1.5"/>
           <circle cx="32" cy="8" r="2.5" fill="white"/>`:K==="on_the_way"?R=`<circle cx="32" cy="8" r="7" fill="#f59e0b" stroke="white" stroke-width="1.5"/>
           <path d="M28.5 8 L32 5 L35.5 8 M32 5 L32 11" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>`:K==="cancelled"&&(R=`<circle cx="32" cy="8" r="7" fill="#ef4444" stroke="white" stroke-width="1.5"/>
-          <path d="M29.5 5.5 L34.5 10.5 M34.5 5.5 L29.5 10.5" stroke="white" stroke-width="1.8" stroke-linecap="round"/>`);const se=Dm({avatarPath:W.tech_avatar_path,avatarUploadedAt:W.tech_avatar_uploaded_at},80),J=se?Q.current.get(se):void 0,ae=Lm(K);let ce;if(J){const me=`pc${W.id}`;ce=`<svg xmlns="http://www.w3.org/2000/svg" width="42" height="44" viewBox="0 0 42 44">
+          <path d="M29.5 5.5 L34.5 10.5 M34.5 5.5 L29.5 10.5" stroke="white" stroke-width="1.8" stroke-linecap="round"/>`);const se=Dm({avatarPath:W.tech_avatar_path,avatarUploadedAt:W.tech_avatar_uploaded_at},80),J=se?Q.current.get(se):void 0,ae=Lm(K);let ce;if(J){const me=`pc${W.id}`;ce=`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="42" height="44" viewBox="0 0 42 44">
         <defs><clipPath id="${me}"><circle cx="17" cy="16" r="9"/></clipPath></defs>
         <path d="M17 0C8 0 1 7 1 16c0 12 16 28 16 28s16-16 16-28C33 7 26 0 17 0z" fill="${Y}" stroke="white" stroke-width="2"/>
         <circle cx="17" cy="16" r="10.5" fill="${ae}"/>
-        <image href="${J}" x="8" y="7" width="18" height="18" clip-path="url(#${me})" preserveAspectRatio="xMidYMid slice"/>
+        <image xlink:href="${J}" href="${J}" x="8" y="7" width="18" height="18" clip-path="url(#${me})" preserveAspectRatio="xMidYMid slice"/>
         <circle cx="8" cy="24" r="6.5" fill="white" stroke="${Y}" stroke-width="1.5"/>
         <text x="8" y="26.5" text-anchor="middle" font-family="-apple-system, system-ui, sans-serif" font-size="9" font-weight="700" fill="${Y}">${D}</text>
         ${R}

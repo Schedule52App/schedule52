@@ -1,5 +1,12 @@
-// cache-bust: 20260616-2030 s52-v6: Port from Wilbanks app — QB invoice ready-gate on auto-open. RtiActions only auto-opens the QuickBooks tab when the server confirms the invoice is indexed (qbReadyConfirmed); otherwise it shows a one-click "Open in QuickBooks" toast action instead of risking a blank QB new-invoice form. Includes prior platform-admin Manage dialog scroll fix. New bundle index-vPQF8jKt.js from schedule52-src build.
-const CACHE = "s52-v6";
+// cache-bust: 20260616-2055 s52-v10: Map pins now embed PNG-transcoded avatars
+// with BOTH xlink:href and href on the nested <image> so they paint on every
+// Chrome build (fixes tech photos not showing on map pins). IMPORTANT: this SW
+// cache name had been frozen at s52-v6 across several bundle deploys, so the SW
+// never re-activated and browsers kept serving stale bundles. The cache name is
+// now tied to the bundle version and MUST be bumped on every deploy that ships
+// a new index-*.js so the activate handler below purges old caches and clients
+// pick up the fresh bundle automatically (no manual cache-clearing needed).
+const CACHE = "s52-v10";
 // GitHub Pages serves this site under /schedule52/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
