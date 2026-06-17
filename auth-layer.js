@@ -258,13 +258,10 @@
       box-shadow: 0 24px 80px rgba(0,0,0,0.6);
     }
     .wc-logo {
-      display: flex; align-items: center; gap: 12px;
+      display: flex; align-items: center; justify-content: center;
       margin-bottom: 28px;
     }
-    .wc-logo img { width: 48px; height: 48px; border-radius: 10px; object-fit: cover; }
-    .wc-logo-text { line-height: 1.2; }
-    .wc-logo-text h1 { margin:0; font-size: 17px; font-weight: 700; color: #fafafa; }
-    .wc-logo-text p { margin:0; font-size: 12px; color: #71717a; }
+    .wc-logo img { width: auto; height: 56px; max-width: 100%; object-fit: contain; display: block; }
     .wc-title { font-size: 22px; font-weight: 700; color: #fafafa; margin: 0 0 6px; }
     .wc-subtitle { font-size: 14px; color: #71717a; margin: 0 0 24px; }
     .wc-field { margin-bottom: 16px; }
@@ -427,11 +424,7 @@
 
     const overlay = showOverlay(`
       <div class="wc-logo">
-        <img src="./assets/logo-DmC-dsba.jpg" alt="Schedule52" />
-        <div class="wc-logo-text">
-          <h1>Schedule52</h1>
-          <p>Field Services Scheduling</p>
-        </div>
+        <img src="./assets/schedule52-login-logo.png" alt="Schedule52 — Smart Scheduling" />
       </div>
       <h2 class="wc-title">Sign In</h2>
       <p class="wc-subtitle">Enter your credentials to continue</p>
@@ -542,11 +535,7 @@
   function renderChangePassword() {
     const overlay = showOverlay(`
       <div class="wc-logo">
-        <img src="./assets/logo-DmC-dsba.jpg" alt="Schedule52" />
-        <div class="wc-logo-text">
-          <h1>Schedule52</h1>
-          <p>Field Services Scheduling</p>
-        </div>
+        <img src="./assets/schedule52-login-logo.png" alt="Schedule52 — Smart Scheduling" />
       </div>
       <h2 class="wc-title">Set Your Password</h2>
       <p class="wc-change-pw-hint">This is your first login. Please create a new password to continue.</p>
