@@ -20,7 +20,10 @@
 // Settings > Subscription (real plan/pricing/Paddle checkout, billing-admin/owner
 // gated); customer accounts-receivable threshold moved to the Dashboard tab.
 // New bundle index-iX83Vjg7.js.
-const CACHE = "s52-v19";
+// cache-bust: 20260618 s52-v20: move the Subscription tab under the Settings
+// "Admin" section header (privileged-tab placement); gating unchanged
+// (admin/owner/both). New bundle index-DPajvk4g.js (CSS unchanged).
+const CACHE = "s52-v20";
 // GitHub Pages serves this site under /schedule52/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
