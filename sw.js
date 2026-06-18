@@ -26,7 +26,8 @@
 // cache-bust wc-v274 estimates grouped+convert
 // cache-bust wc-v275 convert dialog hour-slots+grayout
 // cache-bust: 20260618 s52-v23: configurable default appt length (wc-v276)
-const CACHE = "s52-v24";
+const CACHE = "s52-v25";
+// cache-bust: 20260618 s52-v25: NewAppointment no longer persists synthetic 2h end; tenant default_appt_duration is single source of truth (wc-v277)
 // cache-bust: 20260618 s52-v24: calendar block tracks tenant default appt length (wc-v276b)
 // GitHub Pages serves this site under /schedule52/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
