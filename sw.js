@@ -23,7 +23,8 @@
 // cache-bust: 20260618 s52-v20: move the Subscription tab under the Settings
 // "Admin" section header (privileged-tab placement); gating unchanged
 // (admin/owner/both). New bundle index-DPajvk4g.js (CSS unchanged).
-const CACHE = "s52-v20";
+// cache-bust wc-v274 estimates grouped+convert
+const CACHE = "s52-v21";
 // GitHub Pages serves this site under /schedule52/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
