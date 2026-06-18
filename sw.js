@@ -16,7 +16,11 @@
 // ?q= search-pin. New bundle index-BKNHGdEg.js. Field source now matches the
 // canonical dashboard-source repo; only intentional deltas are neutral Login
 // branding and tenant-aware SMS company name (both already in place).
-const CACHE = "s52-v18";
+// cache-bust: 20260618 s52-v19: restore the account subscription UI under
+// Settings > Subscription (real plan/pricing/Paddle checkout, billing-admin/owner
+// gated); customer accounts-receivable threshold moved to the Dashboard tab.
+// New bundle index-iX83Vjg7.js.
+const CACHE = "s52-v19";
 // GitHub Pages serves this site under /schedule52/ so plain
 // "/" and "/index.html" 404. We try to precache them best-effort but DO NOT
 // fail the install if they're unreachable. Without this, install rejection
